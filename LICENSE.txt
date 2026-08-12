@@ -1,0 +1,148 @@
+UNIBA COLLAB THESIS TEMPLATE LICENSE
+Versione 1.0 – 6 agosto 2026
+
+Copyright © 2025–2026 Giulio Mallardi
+Tutti i diritti riservati, salvo quanto espressamente concesso dalla presente licenza.
+
+Il presente template è stato ideato, sviluppato e mantenuto da Giulio Mallardi
+per il Collab – Collaborative Development Group, Dipartimento di Informatica,
+Università degli Studi di Bari Aldo Moro.
+
+Sito web: https://collab.di.uniba.it/
+
+
+1. OGGETTO DELLA LICENZA
+
+La presente licenza disciplina l’utilizzo, la modifica e la distribuzione
+dell’“UniBA Collab Thesis Template”, inclusi i relativi file sorgenti LaTeX,
+le classi, i pacchetti, le configurazioni, le immagini, gli elementi grafici,
+la documentazione e ogni altro file distribuito insieme al template, nei limiti
+in cui tali materiali siano di titolarità del licenziante.
+
+
+2. AUTORIZZAZIONI
+
+È consentito gratuitamente:
+
+a) utilizzare il template per la redazione di tesi, elaborati finali,
+   relazioni e altri documenti accademici;
+
+b) modificare il template per adattarlo alle esigenze del proprio elaborato;
+
+c) condividere o ridistribuire copie originali o modificate del template,
+   purché siano rispettate tutte le condizioni previste dalla presente licenza.
+
+
+3. OBBLIGO DI ATTRIBUZIONE
+
+Ogni utilizzo del template deve mantenere un’attribuzione chiara e riconoscibile
+a Giulio Mallardi e al Collab – Collaborative Development Group.
+
+In particolare:
+
+a) l’intestazione di copyright e i crediti presenti nei file sorgenti non
+   possono essere rimossi, occultati o alterati in modo da rendere non
+   riconoscibile la provenienza del template;
+
+b) il documento finale generato mediante il template deve conservare, in una
+   posizione ragionevolmente visibile, il seguente credito o una formulazione
+   sostanzialmente equivalente:
+
+   “Tesi redatta con l’UniBA Collab Thesis Template, sviluppato da
+   Giulio Mallardi per il Collab – Collaborative Development Group.”
+
+c) ove tecnicamente possibile, il credito deve includere il collegamento:
+   https://collab.di.uniba.it/;
+
+d) la modifica del template non consente di presentare il template originario
+   come opera propria né di rimuovere l’indicazione dell’autore originario.
+
+
+4. VERSIONI MODIFICATE
+
+Chi distribuisce una versione modificata del template deve:
+
+a) indicare chiaramente che il template è stato modificato;
+
+b) identificare, almeno sinteticamente, l’autore o gli autori delle modifiche;
+
+c) evitare che la versione modificata possa essere confusa con una versione
+   ufficiale mantenuta da Giulio Mallardi o dal Collab;
+
+d) allegare una copia integrale della presente licenza.
+
+
+5. DIVIETI
+
+Non è consentito:
+
+a) rimuovere o alterare gli avvisi di copyright, i crediti di attribuzione o
+   il testo della presente licenza;
+
+b) utilizzare il nome, il logo o altri segni distintivi dell’Università degli
+   Studi di Bari Aldo Moro o del Collab per dichiarare o lasciare intendere
+   un’approvazione, un’affiliazione o una sponsorizzazione non autorizzata;
+
+c) applicare alla copia o alla versione modificata condizioni che impediscano
+   il rispetto degli obblighi di attribuzione previsti dalla presente licenza;
+
+d) vendere o concedere in licenza il template, in forma autonoma, come prodotto
+   proprio. Resta consentito l’uso del template nell’ambito di servizi di
+   redazione, revisione, impaginazione o consulenza, purché siano rispettati
+   gli obblighi di attribuzione.
+
+
+6. ELABORATI REDATTI CON IL TEMPLATE
+
+La presente licenza riguarda il template e non attribuisce a Giulio Mallardi,
+al Collab o all’Università degli Studi di Bari Aldo Moro alcun diritto sui
+contenuti originali inseriti dall’autore dell’elaborato.
+
+L’autore dell’elaborato conserva la titolarità dei propri testi, dati, figure,
+tabelle e degli altri contenuti originali, fatti salvi i diritti di terzi.
+
+
+7. MARCHI, LOGHI E MATERIALI DI TERZI
+
+La presente licenza non concede diritti su marchi, loghi, denominazioni,
+caratteri tipografici, immagini o altri materiali appartenenti a terzi.
+Il loro utilizzo resta soggetto alle rispettive condizioni e alla normativa
+applicabile.
+
+
+8. ESCLUSIONE DI GARANZIA
+
+Il template è fornito “così com’è”, senza garanzie espresse o implicite.
+Nei limiti consentiti dalla legge, il licenziante non risponde di errori,
+malfunzionamenti, perdita di dati, incompatibilità o danni derivanti
+dall’utilizzo o dall’impossibilità di utilizzare il template.
+
+
+9. CESSAZIONE DEI DIRITTI CONCESSI
+
+In caso di violazione delle condizioni della presente licenza, le autorizzazioni
+concesse cessano automaticamente. Esse sono ripristinate qualora la violazione
+venga sanata entro trenta giorni dal momento in cui l’utilizzatore ne ha avuto
+conoscenza, fatto salvo il diritto del titolare di richiedere la cessazione
+della violazione e gli eventuali rimedi previsti dalla legge.
+
+
+10. AUTORIZZAZIONI ULTERIORI
+
+Qualsiasi utilizzo non consentito dalla presente licenza, inclusa la rimozione
+dei crediti visibili, richiede una preventiva autorizzazione scritta di
+Giulio Mallardi.
+
+
+11. ACCETTAZIONE
+
+L’utilizzo, la modifica o la distribuzione del template implica l’accettazione
+delle condizioni della presente licenza.
+
+
+AVVISO BREVE CONSIGLIATO NEI FILE SORGENTI
+
+Copyright © 2025–2026 Giulio Mallardi.
+Utilizzo e modifica consentiti secondo i termini contenuti nel file LICENSE.txt.
+È obbligatorio mantenere i crediti nei sorgenti e l’attribuzione visibile nel
+documento finale.

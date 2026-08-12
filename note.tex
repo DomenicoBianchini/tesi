@@ -1,0 +1,26 @@
+\chapter*{Disclaimer}
+Tutti i marchi, nomi commerciali, prodotti e loghi menzionati in questo elaborato sono di proprietà dei rispettivi titolari. 
+L’autore non rivendica alcun diritto su tali marchi o nomi commerciali e li utilizza esclusivamente a scopo informativo e descrittivo, senza alcun intento di violazione.
+
+% --- Definizione del footer personalizzato per il Disclaimer ---
+\fancypagestyle{collabfooter}{
+  \fancyhf{} % pulisce header e footer
+  \fancyfoot[C]{%
+      \vspace{-3cm} % alza il footer di circa 1 cm
+
+    \IfFileExists{images/collab.pdf}{%
+      \includegraphics[width=2.2cm]{images/collab.pdf}\\[12pt]
+    }{}%
+    {\scriptsize
+      Questa tesi è stata realizzata nell’ambito delle attività di ricerca del\\ 
+        \textbf{}\\
+      \textbf{Collab – Collaborative Development Group}\\ 
+        https://collab.di.uniba.it/ \\
+      Dipartimento di Informatica, Università degli Studi di Bari Aldo Moro
+    }%
+  }
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0pt} % linea sottile sopra il footer (facoltativa)
+}
+
+\thispagestyle{collabfooter}
