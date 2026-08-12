@@ -1,0 +1,24 @@
+# File temporanei generati da LaTeX
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
+# File generati dalla bibliografia
+*.bbl
+*.blg
+
+# Altri file temporanei LaTeX
+*.nav
+*.snm
+*.vrb
+*.bcf
+*.run.xml
+
+# File temporanei generati da minted
+_minted*/
