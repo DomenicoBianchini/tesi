@@ -2,6 +2,72 @@
 
 \section{Contesto e motivazioni}
 
+La sicurezza informatica rappresenta un aspetto sempre più rilevante in un contesto in cui
+sistemi e servizi digitali sono utilizzati in numerosi ambiti della vita quotidiana.
+Tra le principali minacce alla sicurezza dei sistemi informatici rientrano i malware,
+software sviluppati con l'obiettivo di compiere azioni dannose o non autorizzate,
+che possono compromettere il corretto funzionamento dei sistemi e mettere a rischio
+i dati in essi contenuti. La diffusione dei malware e la loro continua evoluzione
+rendono il loro rilevamento un problema di particolare importanza nell'ambito della cybersecurity.
+
+Esistono diversi approcci per il rilevamento dei malware, fra cui i metodi tradizionali
+basati sul riconoscimento di firme note e sull'analisi delle caratteristiche del software;
+tuttavia, la continua comparsa di nuove varianti di malware e l'utilizzo di tecniche che
+ne rendono più difficile l'individuazione hanno portato alla ricerca di approcci alternativi.
+In particolare, negli ultimi anni hanno assunto particolare importanza le tecniche basate
+su Machine Learning e Deep Learning, che permettono di individuare più efficacemente
+anche nuove varianti di malware, superando alcuni dei limiti dei metodi tradizionali.
+
+L'utilizzo del Deep Learning consente, inoltre, di analizzare i dati attraverso
+diverse forme di rappresentazione, in particolare la rappresentazione
+visuale dei file malware, ottenuta trasformando le informazioni contenute
+nei file binari in immagini. In questo modo è possibile applicare tecniche
+e modelli di Deep Learning per la classificazione delle immagini, con
+l'obiettivo di distinguere file malevoli da file legittimi.
+
 \section{Obiettivi della tesi}
 
+L'obiettivo di questo lavoro di tesi è la sintesi di un algoritmo in grado
+di classificare i file Windows Portable Executable (PE) come malevoli o
+benigni, rappresentandoli prima sotto forma di immagini e utilizzando
+successivamente un modello di Deep Learning per la loro classificazione.
+
+In particolare, questo lavoro analizza e confronta tre diverse strategie
+per la conversione dei file PE in immagini, ossia LINEAR, ZIGZAG e
+SERPENTINE, che si differenziano in base al tipo di mapping utilizzato
+per costruire l'immagine. Per ciascuna strategia vengono confrontate
+sia immagini RGB sia grayscale, generate secondo due diverse configurazioni
+a dimensione fissa oppure variabile in base alla dimensione del file PE.
+Le immagini ottenute vengono poi utilizzate per addestrare e valutare
+un modello ResNet-50, con l'obiettivo di distinguere i file malevoli da
+quelli benigni.
+
+Il confronto dei risultati ottenuti dalle diverse configurazioni e
+strategie di mapping permette infine di valutarne le prestazioni e
+individuare quale configurazione risulti più efficace nella
+classificazione dei file PE.
+
 \section{Struttura della tesi}
+
+La tesi è organizzata in cinque capitoli, il primo dedicato
+all'introduzione del lavoro, al suo contesto, alle motivazioni e agli
+obiettivi. 
+
+Il Capitolo 2 descrive il formato Windows Portable Executable (PE),
+analizzandone le principali caratteristiche, e introduce il concetto
+di malware e le principali tecniche utilizzate per il loro rilevamento.
+
+Il Capitolo 3 descrive il processo di conversione dei file PE in immagini,
+presentando le diverse strategie di mapping e le configurazioni utilizzate
+per la loro rappresentazione, e l'utilizzo di ResNet per la successiva
+classificazione.
+
+Il Capitolo 4 è dedicato alla validazione empirica del lavoro e descrive
+il dataset utilizzato, il set-up sperimentale e le metriche adottate per
+la valutazione. Vengono inoltre analizzati e confrontati i risultati
+ottenuti dalle diverse configurazioni utilizzate, con lo scopo di
+individuare quella con le migliori prestazioni, ovvero quella più
+efficace nella classificazione dei file PE.
+
+Infine, il Capitolo 5 riassume i principali risultati ottenuti e
+presenta le conclusioni del lavoro e i possibili sviluppi futuri.
