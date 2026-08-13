@@ -2,4 +2,72 @@
 
 \section{Il formato Windows PE}
 
+Il Portable Executable (PE) è il formato utilizzato nei sistemi Windows
+per i file \texttt{.exe}, \texttt{.dll} e altre tipologie di file
+eseguibili. Inizialmente progettato come formato eseguibile standard
+per i sistemi Windows, il formato PE, fin dalla sua introduzione, ha
+subito diverse modifiche, anche in seguito al passaggio ai sistemi
+Windows a 64 bit.
+
+La struttura di un file PE contiene le informazioni necessarie al
+sistema operativo Windows per caricare e gestire il codice eseguibile.
+Oltre al codice da eseguire, un file PE contiene infatti metadati e
+altre informazioni organizzate secondo una struttura ben definita,
+la cui conoscenza riveste un ruolo importante nell'ambito dell'analisi
+dei malware.
+
+In particolare, la struttura di un file PE è organizzata in tre parti
+principali:
+
+\begin{itemize}
+    \item \textbf{Header}: contiene le informazioni principali relative
+    al file PE e al suo caricamento in memoria. L'header è a sua volta
+    suddiviso nelle seguenti parti:
+
+    \vspace{-0.5em}
+    \begin{itemize}
+        \item \textbf{DOS Header}: si trova all'inizio del file PE e contiene
+        informazioni relative alla compatibilità con MS-DOS;
+
+        \item \textbf{DOS Stub}: contiene un piccolo programma utilizzato
+        per visualizzare un messaggio nel caso di esecuzione in ambiente
+        DOS;
+
+        \item \textbf{NT Header}: contiene le principali informazioni
+        relative al file PE ed è a sua volta suddiviso in:
+
+        \begin{itemize}
+            \item \textbf{PE Signature}: identifica il file come Portable
+            Executable;
+
+            \item \textbf{COFF File Header}: contiene informazioni sulle
+            caratteristiche del file e sulle sezioni presenti;
+
+            \item \textbf{Optional Header}: contiene informazioni utilizzate
+            durante il caricamento del file in memoria.
+        \end{itemize}
+    \end{itemize}
+
+    \item \textbf{Tabella delle sezioni}: contiene le informazioni relative
+    alle diverse sezioni presenti nel file e alle loro caratteristiche.
+
+    \item \textbf{Sezioni}: contengono il codice e i dati del file PE,
+    organizzati in base alla loro funzione. Tra le sezioni comunemente
+    presenti si trovano:
+
+    \begin{itemize}
+        \item \texttt{.text}: contiene principalmente il codice eseguibile;
+
+        \item \texttt{.data}: contiene i dati inizializzati;
+
+        \item \texttt{.bss}: contiene i dati non inizializzati;
+
+        \item \texttt{.rsrc}: contiene le risorse utilizzate dal programma;
+
+        \item \texttt{.reloc}: contiene le informazioni relative alla
+        rilocazione dell'immagine.
+    \end{itemize}
+    \end{itemize}
+
+
 \section{Malware e tecniche di rilevamento}
