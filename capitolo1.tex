@@ -17,8 +17,8 @@ la cui conoscenza riveste un ruolo importante nell'ambito dell'analisi
 dei malware.
 
 In particolare, la struttura di un file PE è organizzata in tre parti
-principali, come mostrato nella Figura~\ref{fig:pe_structure}
-\cite{microsoftPE}:
+principali \cite{microsoftPE}, come mostrato nella
+Figura~\ref{fig:pe_structure}:
 
 \begin{itemize}
     \item \textbf{Header}: contiene le informazioni principali relative
@@ -75,13 +75,16 @@ principali, come mostrato nella Figura~\ref{fig:pe_structure}
     \end{itemize}
 \end{itemize}
 
-\begin{figure}[htp]
+\begin{figure}[!ht]
     \centering
     \includegraphics[width=0.6\textwidth]{images/pe_structure.png}
     \caption{Struttura generale di un file PE, tratta da \cite{khan2023}}
     \label{fig:pe_structure}
 \end{figure}
 
+\vspace{0.5cm}
+
+\section{Malware e tecniche di rilevamento}
 L'header riveste un ruolo importante nella classificazione dei malware,
 dato che le informazioni in esso contenute sono risultate tra quelle
 che contribuiscono maggiormente al processo di classificazione
