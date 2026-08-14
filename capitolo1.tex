@@ -16,8 +16,8 @@ altre informazioni organizzate secondo una struttura ben definita,
 la cui conoscenza riveste un ruolo importante nell'ambito dell'analisi
 dei malware.
 
-In particolare, la struttura di un file PE è organizzata in tre parti
-principali:
+In particolare, per descrivere la struttura di un file PE è possibile
+distinguere tre parti principali \cite{microsoftPE}:
 
 \begin{itemize}
     \item \textbf{Header}: contiene le informazioni principali relative
@@ -26,12 +26,12 @@ principali:
 
     \vspace{-0.5em}
     \begin{itemize}
-        \item \textbf{DOS Header}: si trova all'inizio del file PE e contiene
-        informazioni relative alla compatibilità con MS-DOS;
+        \item \textbf{DOS Header}: rappresenta la parte iniziale del file PE
+        e contiene informazioni relative al formato DOS. Contiene inoltre un
+        riferimento che indica la posizione iniziale del PE Header;
 
-        \item \textbf{DOS Stub}: contiene un piccolo programma utilizzato
-        per visualizzare un messaggio nel caso di esecuzione in ambiente
-        DOS;
+        \item \textbf{DOS Stub}: viene utilizzato per visualizzare un messaggio
+        che indica se il programma può essere eseguito o meno in modalità DOS;
 
         \item \textbf{NT Header}: contiene le principali informazioni
         relative al file PE ed è a sua volta suddiviso in:
@@ -44,30 +44,49 @@ principali:
             caratteristiche del file e sulle sezioni presenti;
 
             \item \textbf{Optional Header}: contiene informazioni utilizzate
-            durante il caricamento del file in memoria.
+            durante il caricamento del file in memoria, tra cui il punto di
+            ingresso del programma.
         \end{itemize}
     \end{itemize}
 
-    \item \textbf{Tabella delle sezioni}: contiene le informazioni relative
-    alle diverse sezioni presenti nel file e alle loro caratteristiche.
+    \item \textbf{Tabella delle sezioni}: descrive le caratteristiche delle
+    diverse sezioni presenti nel file e contiene le informazioni necessarie
+    per mapparle in memoria e indicare se ciascuna sezione è di sola lettura
+    oppure scrivibile;
 
-    \item \textbf{Sezioni}: contengono il codice e i dati del file PE,
-    organizzati in base alla loro funzione. Tra le sezioni comunemente
-    presenti si trovano:
+    \item \textbf{Sezioni}: contengono il codice e i dati del file PE.
+    Tra le sezioni comunemente presenti si trovano:
 
     \begin{itemize}
-        \item \texttt{.text}: contiene principalmente il codice eseguibile;
+        \item \texttt{.text}: contiene il codice eseguibile;
 
-        \item \texttt{.data}: contiene i dati inizializzati;
+        \item \texttt{.data}: contiene le variabili globali e statiche
+        inizializzate;
 
-        \item \texttt{.bss}: contiene i dati non inizializzati;
+        \item \texttt{.bss}: contiene le variabili globali e statiche
+        non inizializzate;
 
-        \item \texttt{.rsrc}: contiene le risorse utilizzate dal programma;
+        \item \texttt{.rsrc}: contiene le risorse utilizzate dal programma,
+        come icone, immagini, stringhe e finestre di dialogo;
 
-        \item \texttt{.reloc}: contiene le informazioni relative alla
-        rilocazione dell'immagine.
+        \item \texttt{.reloc}: contiene i dati necessari alla rilocazione
+        del programma;
     \end{itemize}
-    \end{itemize}
+\end{itemize}
+
+L'header riveste un ruolo importante nella classificazione dei malware,
+dato che le informazioni in esso contenute sono risultate tra quelle
+che contribuiscono maggiormente al processo di classificazione
+\cite{zhang2024}.
+
+L'analisi della struttura delle sezioni può essere utile anche
+nell'ambito del rilevamento dei malware, dato che il codice malevolo
+può essere nascosto all'interno di sezioni insolite oppure possono
+essere aggiunte ulteriori sezioni con l'obiettivo di rendere più
+complessa l'analisi del file. Inoltre, i file malware possono presentare
+anomalie nella struttura e nelle caratteristiche del formato PE rispetto
+ai file benigni, rendendo queste informazioni rilevanti per il loro
+rilevamento \cite{bai2014}.
 
 
 \section{Malware e tecniche di rilevamento}
