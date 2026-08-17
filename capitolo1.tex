@@ -107,6 +107,8 @@ un software progettato con lo scopo di compromettere la riservatezza,
 l'integrità o la disponibilità dei dati, delle applicazioni o del
 sistema operativo \cite{souppaya2013}.
 
+\subsection{Tipologie di malware}
+
 I malware possono essere suddivisi in diverse tipologie in base alle
 loro caratteristiche e al loro comportamento. Inoltre, queste categorie
 non sono esclusive, poiché uno stesso malware può presentare
@@ -152,6 +154,8 @@ processi, file o connessioni di rete. Per questo motivo, molti malware
 utilizzano tecniche proprie dei rootkit per nascondere la propria
 presenza all'interno del sistema.
 
+\subsection{Tecniche di rilevamento}
+
 Il rilevamento dei malware può essere effettuato attraverso diverse
 tecniche. Uno degli approcci tradizionalmente utilizzati, anche dagli
 antivirus, è quello basato sulle firme, in cui i file vengono confrontati
@@ -173,94 +177,6 @@ l'analisi dinamica e l'analisi statica, in base all'esecuzione o meno
 del programma durante la raccolta delle feature, ovvero delle
 caratteristiche utilizzate per effettuare l'analisi
 \cite{zhang2024}.
-
-\begin{figure}[!ht]
-    \centering
-
-    \begin{tikzpicture}[
-        node distance=0.7cm and 1.2cm,
-        main/.style={
-            draw,
-            rounded corners=2pt,
-            align=center,
-            minimum height=0.9cm,
-            text width=4.2cm
-        },
-        title/.style={
-            draw,
-            rounded corners=2pt,
-            align=center,
-            minimum height=0.9cm,
-            text width=4.2cm,
-            font=\bfseries
-        },
-        arrow/.style={
-            -{Latex[length=2mm]},
-            thick
-        }
-    ]
-
-        % Titolo
-        \node[title] (analysis)
-        {Analisi dei malware};
-
-        % Due approcci
-        \node[title, below left=0.8cm and 0.7cm of analysis]
-        (dynamic)
-        {Analisi dinamica};
-
-        \node[title, below right=0.8cm and 0.7cm of analysis]
-        (static)
-        {Analisi statica};
-
-        % Esecuzione
-        \node[main, below=of dynamic]
-        (dynamicExecution)
-        {Programma in esecuzione};
-
-        \node[main, below=of static]
-        (staticExecution)
-        {Programma non eseguito};
-
-        % Informazioni analizzate
-        \node[main, below=of dynamicExecution]
-        (dynamicInformation)
-        {Comportamento del programma};
-
-        \node[main, below=of staticExecution]
-        (staticInformation)
-        {Contenuto del file};
-
-        % Feature
-        \node[main, below=of dynamicInformation]
-        (dynamicFeatures)
-        {Chiamate API\\
-        Comunicazioni di rete\\
-        Memoria e CPU};
-
-        \node[main, below=of staticInformation]
-        (staticFeatures)
-        {Rappresentazione binaria};
-
-        % Frecce
-        \draw[arrow] (analysis) -- (dynamic);
-        \draw[arrow] (analysis) -- (static);
-
-        \draw[arrow] (dynamic) -- (dynamicExecution);
-        \draw[arrow] (static) -- (staticExecution);
-
-        \draw[arrow] (dynamicExecution) -- (dynamicInformation);
-        \draw[arrow] (staticExecution) -- (staticInformation);
-
-        \draw[arrow] (dynamicInformation) -- (dynamicFeatures);
-        \draw[arrow] (staticInformation) -- (staticFeatures);
-
-    \end{tikzpicture}
-
-    \caption{Confronto tra analisi dinamica e analisi statica dei malware,
-    basato su \cite{zhang2024}}
-    \label{fig:static_dynamic_analysis}
-\end{figure}
 
 L'analisi dinamica prevede l'esecuzione del programma e l'osservazione
 del suo comportamento durante l'esecuzione. In questo modo possono
@@ -286,6 +202,52 @@ direttamente sulla rappresentazione binaria di un programma può
 risultare complesso. Inoltre, i malware possono utilizzare tecniche
 in grado di modificare il programma e ostacolare questo tipo di
 analisi \cite{egele2012}.
+
+\begin{table}[!ht]
+    \centering
+    \caption{Confronto tra analisi statica e analisi dinamica dei malware}
+    \label{tab:static_dynamic_analysis}
+    \renewcommand{\arraystretch}{1.3}
+
+    \begin{tabularx}{\textwidth}{
+        >{\raggedright\arraybackslash\bfseries}p{0.22\textwidth}
+        >{\raggedright\arraybackslash}X
+        >{\raggedright\arraybackslash}X
+    }
+        \toprule
+        \textbf{Caratteristica} &
+        \textbf{Analisi statica} &
+        \textbf{Analisi dinamica} \\
+        \midrule
+
+        Esecuzione &
+        Non richiesta &
+        Richiesta \\
+        \addlinespace
+
+        Informazioni analizzate &
+        Rappresentazione binaria del programma &
+        Comportamento durante l'esecuzione \\
+        \addlinespace
+
+        Esempi di feature &
+        Informazioni ricavate dal contenuto del file &
+        Chiamate API, comunicazioni di rete, memoria e CPU \\
+        \addlinespace
+
+        Vantaggi &
+        Tempi di analisi inferiori &
+        Può contribuire al rilevamento di malware sconosciuti ed è
+        meno vulnerabile alle tecniche di offuscamento \\
+        \addlinespace
+
+        Limiti &
+        Può essere ostacolata da tecniche di packing o cifratura &
+        Può richiedere tempi di analisi maggiori \\
+
+        \bottomrule
+    \end{tabularx}
+\end{table}
 
 I limiti degli approcci descritti in precedenza, insieme alla crescente
 complessità e quantità dei malware, hanno favorito l'utilizzo di
