@@ -2,4 +2,177 @@
 
 \section{Conversione di file PE in immagini}
 
+Un possibile approccio per l'analisi statica dei malware consiste nel
+rappresentare il contenuto binario dei file sotto forma di immagini.
+In questo modo, la sequenza di byte che compone un file può essere
+convertita in una rappresentazione visiva, sulla quale è possibile
+applicare tecniche di analisi e classificazione delle immagini.
+
+Nataraj et al. \cite{nataraj2011} hanno proposto un approccio in cui
+il contenuto binario di un file malware viene riorganizzato in una
+matrice e rappresentato sotto forma di un'immagine in scala di grigi.
+Gli autori hanno osservato che malware appartenenti alla stessa
+famiglia possono presentare immagini simili a livello di layout e
+texture. A partire da questa osservazione, hanno quindi utilizzato
+caratteristiche estratte dalle immagini per effettuare la
+classificazione, senza richiedere il disassemblaggio del codice o
+l'esecuzione dei file analizzati.
+
+In particolare, la conversione in immagine del file PE viene eseguita
+leggendo il contenuto del file come una sequenza di byte, ciascuno dei
+quali viene rappresentato attraverso un valore intero compreso tra 0
+e 255. Nel caso di un'immagine in scala di grigi, ogni byte viene
+associato a un pixel, il cui valore determina il livello di intensità,
+dove 0 corrisponde al nero e 255 al bianco. I valori ottenuti vengono
+quindi organizzati in una matrice bidimensionale che costituisce
+l'immagine.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.55\textwidth]{images/pe_to_grayscale.png}
+    \caption{Principali fasi della conversione di un file PE in
+    un'immagine in scala di grigi, tratta da \cite{zhang2024}}
+    \label{fig:pe_to_grayscale}
+\end{figure}
+
+Oltre alla rappresentazione in scala di grigi, i byte del file PE
+possono essere utilizzati per costruire un'immagine RGB. In questo
+caso, ciascun pixel è composto da tre canali, rosso, verde e blu,
+ognuno dei quali assume, come nel caso precedente, un valore compreso
+tra 0 e 255.
+
+Guo et al. \cite{guo2020} utilizzano una rappresentazione RGB in cui
+tre byte consecutivi vengono raggruppati e associati, nello stesso
+ordine, ai tre canali di un pixel. Il primo byte determina quindi
+il valore del canale rosso, il secondo quello del canale verde e
+il terzo quello del canale blu.
+
+\begin{figure}[H]
+    \centering
+
+    \begin{subfigure}[b]{0.38\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/pe_grayscale.png}
+        \caption{Rappresentazione in scala di grigi}
+        \label{fig:pe_grayscale}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.38\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/pe_rgb.png}
+        \caption{Rappresentazione RGB}
+        \label{fig:pe_rgb}
+    \end{subfigure}
+
+    \caption{Rappresentazioni in scala di grigi e RGB dello stesso
+    file PE}
+    \label{fig:pe_grayscale_rgb}
+\end{figure}
+
+Nel presente lavoro vengono considerate entrambe le rappresentazioni
+descritte, in scala di grigi e RGB. Una volta ottenuti i valori dei
+pixel a partire dai byte del file PE, occorre stabilire come disporli
+all'interno della matrice che costituisce l'immagine.
+
+Linh et al. \cite{linh2024} analizzano differenti modalità di
+disposizione dei pixel, considerando tre diverse strategie di mapping
+denominate Normal, Zigzag e Serpentine.
+
+Il mapping Normal, indicato nel presente lavoro come \textbf{LINEAR},
+dispone i pixel seguendo l'ordine originale dei byte del file PE,
+procedendo da sinistra verso destra e dall'alto verso il basso.
+Questa disposizione, tuttavia, interrompe la continuità tra righe
+consecutive, poiché l'ultimo pixel di una riga e il primo della
+successiva, pur corrispondendo a byte consecutivi, non risultano
+adiacenti nell'immagine.
+
+Il mapping \textbf{ZIGZAG} dispone invece i pixel alternando la
+direzione di percorrenza delle righe. Una riga viene quindi percorsa
+da sinistra verso destra, mentre quella successiva da destra verso
+sinistra. In questo modo viene mantenuta la continuità tra righe
+consecutive, poiché i pixel corrispondenti a byte consecutivi
+rimangono adiacenti nell'immagine.
+
+Il mapping \textbf{SERPENTINE} utilizza infine un percorso basato
+sulle diagonali della matrice, alternandone la direzione di
+percorrenza. Questa disposizione consente di mantenere adiacenti
+nell'immagine i pixel corrispondenti a byte consecutivi, distribuendoli
+però lungo le diagonali anziché lungo le righe.
+
+Nel caso dei file PE, questa disposizione permette inoltre di
+concentrare in una stessa area dell'immagine le informazioni
+appartenenti alla parte iniziale del file, in cui è contenuto
+l'header, che comprende informazioni significative per la
+classificazione dei file PE, invece di distribuirle lungo le prime
+righe dell'immagine come avviene nei mapping precedenti.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{images/mapping_paths.png}
+    \caption{Disposizione dei pixel secondo i mapping Normal, Zigzag
+    e Serpentine, rappresentati rispettivamente, tratta da
+    \cite{linh2024}}
+    \label{fig:mapping_paths}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{images/mapping_examples.png}
+    \caption{Esempi di immagini malware ottenute utilizzando
+    rispettivamente i mapping Normal, Zigzag e Serpentine, tratte da
+    \cite{linh2024}}
+    \label{fig:mapping_examples}
+\end{figure}
+
+\begin{table}[!ht]
+    \centering
+    \caption{Confronto tra le strategie di mapping considerate}
+    \label{tab:mapping_comparison}
+    \renewcommand{\arraystretch}{1.3}
+
+    \begin{tabularx}{\textwidth}{
+        >{\raggedright\arraybackslash\bfseries}p{0.22\textwidth}
+        >{\raggedright\arraybackslash}X
+        >{\raggedright\arraybackslash}X
+    }
+        \toprule
+        \textbf{Mapping} &
+        \textbf{Disposizione} &
+        \textbf{Effetto della disposizione} \\
+        \midrule
+
+        LINEAR &
+        Da sinistra verso destra, riga per riga &
+        Interrompe la continuità tra righe consecutive \\
+        \addlinespace
+
+        ZIGZAG &
+        Direzione alternata tra righe consecutive &
+        Mantiene adiacenti i pixel corrispondenti a byte consecutivi \\
+        \addlinespace
+
+        SERPENTINE &
+        Percorso alternato lungo le diagonali &
+        Mantiene l'adiacenza tra byte consecutivi e concentra la parte
+        iniziale del file in una stessa area dell'immagine \\
+
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+Un ulteriore aspetto da considerare nella conversione riguarda la
+scelta delle dimensioni dell'immagine, dato che i file PE possono
+avere dimensioni differenti e, di conseguenza, anche il numero di
+pixel ottenuti a partire dalla sequenza di byte può variare da un
+file all'altro.
+
+Una possibile soluzione consiste nel fissare a priori le dimensioni
+dell'immagine, stabilendo quindi un numero massimo di pixel
+disponibili. Se i dati ottenuti dal file non sono sufficienti a
+riempire l'intera immagine, è possibile applicare lo zero-padding,
+completando i pixel rimanenti con valori pari a zero. Al contrario,
+se la quantità di dati supera la capacità dell'immagine, la parte
+eccedente può essere eliminata mediante troncamento
+\cite{nguyen2023}.
+
 \section{ResNet per classificazione di immagini}
