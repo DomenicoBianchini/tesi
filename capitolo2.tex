@@ -91,6 +91,26 @@ consecutive, poiché l'ultimo pixel di una riga e il primo della
 successiva, pur corrispondendo a byte consecutivi, non risultano
 adiacenti nell'immagine.
 
+\begin{algorithm}[H]
+    \caption{Pseudocodice del mapping LINEAR}
+    \label{alg:linear_mapping}
+    \begin{algorithmic}[1]
+        \State $image =$ matrice di zeri di dimensione
+        $height \times width \times channels$
+        \State $index = 0$
+        \For{$y = 0$ \textbf{to} $height - 1$}
+            \For{$x = 0$ \textbf{to} $width - 1$}
+                \For{$c = 0$ \textbf{to} $channels - 1$}
+                    \If{$index < length(byteData)$}
+                        \State $image[y][x][c] = byteData[index]$
+                        \State $index = index + 1$
+                    \EndIf
+                \EndFor
+            \EndFor
+        \EndFor
+    \end{algorithmic}
+\end{algorithm}
+
 Il mapping \textbf{ZIGZAG} dispone invece i pixel alternando la
 direzione di percorrenza delle righe. Una riga viene quindi percorsa
 da sinistra verso destra, mentre quella successiva da destra verso
@@ -98,11 +118,69 @@ sinistra. In questo modo viene mantenuta la continuità tra righe
 consecutive, poiché i pixel corrispondenti a byte consecutivi
 rimangono adiacenti nell'immagine.
 
+\begin{algorithm}[H]
+    \caption{Pseudocodice del mapping ZIGZAG}
+    \label{alg:zigzag_mapping}
+    \begin{algorithmic}[1]
+        \State $image =$ matrice di zeri di dimensione
+        $height \times width \times channels$
+        \State $index = 0$
+        \For{$y = 0$ \textbf{to} $height - 1$}
+            \If{$y \bmod 2 = 0$}
+                \State $xRange = 0$ \textbf{to} $width - 1$
+            \Else
+                \State $xRange = width - 1$ \textbf{to} $0$
+            \EndIf
+            \For{$x$ \textbf{in} $xRange$}
+                \For{$c = 0$ \textbf{to} $channels - 1$}
+                    \If{$index < length(byteData)$}
+                        \State $image[y][x][c] = byteData[index]$
+                        \State $index = index + 1$
+                    \EndIf
+                \EndFor
+            \EndFor
+        \EndFor
+    \end{algorithmic}
+\end{algorithm}
+
 Il mapping \textbf{SERPENTINE} utilizza infine un percorso basato
 sulle diagonali della matrice, alternandone la direzione di
 percorrenza. Questa disposizione consente di mantenere adiacenti
 nell'immagine i pixel corrispondenti a byte consecutivi, distribuendoli
 però lungo le diagonali anziché lungo le righe.
+
+\begin{algorithm}[H]
+    \caption{Pseudocodice del mapping SERPENTINE}
+    \label{alg:serpentine_mapping}
+    \begin{algorithmic}[1]
+        \State $image =$ matrice di zeri di dimensione
+        $height \times width \times channels$
+        \State $index = 0$
+
+        \For{$diagonal = 0$ \textbf{to} $height + width - 2$}
+
+            \State $startY = \max(0, diagonal - (width - 1))$
+            \State $endY = \min(height - 1, diagonal)$
+
+            \If{$diagonal \bmod 2 = 0$}
+                \State $yRange = startY$ \textbf{to} $endY$
+            \Else
+                \State $yRange = endY$ \textbf{to} $startY$
+            \EndIf
+
+            \For{$y$ \textbf{in} $yRange$}
+                \State $x = diagonal - y$
+
+                \For{$c = 0$ \textbf{to} $channels - 1$}
+                    \If{$index < length(byteData)$}
+                        \State $image[y][x][c] = byteData[index]$
+                        \State $index = index + 1$
+                    \EndIf
+                \EndFor
+            \EndFor
+        \EndFor
+    \end{algorithmic}
+\end{algorithm}
 
 Nel caso dei file PE, questa disposizione permette inoltre di
 concentrare in una stessa area dell'immagine le informazioni
