@@ -8,6 +8,8 @@ In questo modo, la sequenza di byte che compone un file può essere
 convertita in una rappresentazione visiva, sulla quale è possibile
 applicare tecniche di analisi e classificazione delle immagini.
 
+\subsection{Rappresentazione in scala di grigi e RGB}
+
 Nataraj et al. \cite{nataraj2011} hanno proposto un approccio in cui
 il contenuto binario di un file malware viene riorganizzato in una
 matrice e rappresentato sotto forma di un'immagine in scala di grigi.
@@ -69,10 +71,13 @@ il terzo quello del canale blu.
     \label{fig:pe_grayscale_rgb}
 \end{figure}
 
-Nel presente lavoro vengono considerate entrambe le rappresentazioni
-descritte, in scala di grigi e RGB. Una volta ottenuti i valori dei
-pixel a partire dai byte del file PE, occorre stabilire come disporli
-all'interno della matrice che costituisce l'immagine.
+Nel presente lavoro di tesi vengono considerate entrambe le
+rappresentazioni descritte, in scala di grigi e RGB. Una volta
+ottenuti i valori dei pixel a partire dai byte del file PE, occorre
+stabilire come disporli all'interno della matrice che costituisce
+l'immagine.
+
+\subsection{Strategie di mapping}
 
 Linh et al. \cite{linh2024} analizzano differenti modalità di
 disposizione dei pixel, considerando tre diverse strategie di mapping
@@ -160,6 +165,8 @@ righe dell'immagine come avviene nei mapping precedenti.
     \end{tabularx}
 \end{table}
 
+\subsection{Dimensioni delle immagini}
+
 Un ulteriore aspetto da considerare nella conversione riguarda la
 scelta delle dimensioni dell'immagine, dato che i file PE possono
 avere dimensioni differenti e, di conseguenza, anche il numero di
@@ -171,8 +178,71 @@ dell'immagine, stabilendo quindi un numero massimo di pixel
 disponibili. Se i dati ottenuti dal file non sono sufficienti a
 riempire l'intera immagine, è possibile applicare lo zero-padding,
 completando i pixel rimanenti con valori pari a zero. Al contrario,
-se la quantità di dati supera la capacità dell'immagine, la parte
-eccedente può essere eliminata mediante troncamento
-\cite{nguyen2023}.
+se la quantità di dati supera la capacità dell'immagine, i byte che
+non possono essere rappresentati vengono eliminati mediante
+troncamento \cite{nguyen2023}.
+
+Un approccio alternativo consiste nell'adattare le dimensioni
+dell'immagine alla quantità di dati da rappresentare, in modo da
+preservare l'intera sequenza di byte ed evitare il troncamento.
+Nataraj et al. \cite{nataraj2011}, in particolare, scelgono la
+larghezza dell'immagine in base alla dimensione del file, utilizzando
+diversi intervalli prestabiliti, mentre l'altezza dipende dal rapporto
+tra il numero di byte da rappresentare e la larghezza scelta.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.48\textwidth]{images/nataraj_widths.png}
+    \caption{Larghezze delle immagini utilizzate in funzione della
+    dimensione dei file, tratta da \cite{nataraj2011}}
+    \label{fig:nataraj_widths}
+\end{figure}
+
+Nel presente lavoro vengono utilizzate entrambe le configurazioni
+per le dimensioni delle immagini, a dimensione fissa oppure con
+altezza variabile. Nella prima configurazione le immagini hanno
+dimensioni fisse pari a 224×224 pixel. Nella seconda, invece, la
+larghezza viene determinata a partire dalla lunghezza media dei file
+del dataset e dal numero di canali della rappresentazione. La
+larghezza è stata calcolata tramite la seguente formula:
+
+\[
+\text{larghezza} =
+\left\lceil
+\sqrt{
+\frac{\text{lunghezza media dei file}}
+     {\text{numero di canali}}
+}
+\right\rceil.
+\]
+
+Dividendo la lunghezza media dei file per il numero di canali si
+ottiene il numero medio di pixel necessari, considerando che a ciascun
+pixel corrisponde un byte nella rappresentazione in scala di grigi e
+tre byte nella rappresentazione RGB. La radice quadrata di tale valore
+viene quindi utilizzata per determinare la larghezza dell'immagine.
+
+Una volta fissata la larghezza, per ciascun file viene prima calcolato
+il numero di pixel necessari in base al numero di byte del file e al
+numero di canali:
+
+\[
+\text{numero di pixel} =
+\left\lfloor
+\frac{\text{numero di byte del file}}
+     {\text{numero di canali}}
+\right\rfloor.
+\]
+
+L'altezza viene quindi determinata dividendo il numero di pixel
+necessari per la larghezza e arrotondando il risultato per eccesso:
+
+\[
+\text{altezza} =
+\left\lceil
+\frac{\text{numero di pixel necessari}}
+     {\text{larghezza}}
+\right\rceil.
+\]
 
 \section{ResNet per classificazione di immagini}
