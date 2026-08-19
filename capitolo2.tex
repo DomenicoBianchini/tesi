@@ -193,8 +193,7 @@ righe dell'immagine come avviene nei mapping precedenti.
     \centering
     \includegraphics[width=0.65\textwidth]{images/mapping_paths.png}
     \caption{Disposizione dei pixel secondo i mapping Normal, Zigzag
-    e Serpentine, rappresentati rispettivamente, tratta da
-    \cite{linh2024}}
+    e Serpentine, tratta da \cite{linh2024}}
     \label{fig:mapping_paths}
 \end{figure}
 
@@ -332,6 +331,8 @@ possono essere utilizzate le reti neurali convoluzionali
 (Convolutional Neural Networks, CNN), modelli particolarmente adatti
 all'elaborazione di dati organizzati sotto forma di immagini.
 
+\subsection{Reti neurali convoluzionali}
+
 Le CNN sono costituite da una successione di livelli che elaborano
 progressivamente i dati ricevuti in input. Un ruolo centrale è svolto
 dai livelli convoluzionali, nei quali dei filtri analizzano porzioni
@@ -366,10 +367,110 @@ vi sono il max pooling, che seleziona il valore massimo presente in
 ciascuna regione considerata, e l'average pooling, che ne calcola
 invece il valore medio \cite{lecun2015}.
 
+Nella parte finale di una CNN possono essere presenti uno o più
+livelli completamente connessi (\textit{fully connected}), nei quali
+ogni neurone è collegato a tutti i neuroni del livello precedente.
+Questi livelli utilizzano le caratteristiche estratte dai livelli
+precedenti per produrre l'output utilizzato per la classificazione.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]{images/cnn_architecture.png}
     \caption{Esempio della struttura di una rete neurale convoluzionale,
     tratta da \cite{haque2023}}
     \label{fig:cnn_architecture}
+\end{figure}
+
+\subsection{ResNet e residual learning}
+
+Nel corso degli anni sono state sviluppate diverse architetture di
+reti neurali convoluzionali, caratterizzate da strutture e profondità
+differenti. Tra queste rientra la Residual Network (ResNet), proposta
+da He et al. \cite{he2016}, che consente l'addestramento di reti
+estremamente profonde, cioè caratterizzate da un elevato numero di
+livelli.
+
+L'aumento della profondità di una rete neurale non comporta tuttavia
+necessariamente un miglioramento delle prestazioni. Con l'aumentare
+del numero di livelli può infatti verificarsi il cosiddetto
+\textit{degradation problem}, per cui l'accuratezza della rete smette
+inizialmente di migliorare e successivamente tende a diminuire. Come
+osservato dagli autori, questo fenomeno non è necessariamente dovuto
+all'overfitting, poiché l'aggiunta di ulteriori livelli può portare
+anche a un peggioramento delle prestazioni durante l'addestramento.
+
+Per affrontare questo problema, ResNet introduce il concetto di
+\textit{residual learning}. In una rete tradizionale, una successione
+di livelli apprende direttamente una mappatura $H(x)$ a partire
+dall'input $x$. ResNet modifica questo approccio facendo apprendere
+ai livelli una funzione residua $F(x)$, che rappresenta la differenza
+tra la mappatura desiderata e l'input:
+
+\begin{equation}
+    F(x) = H(x) - x.
+\end{equation}
+
+La mappatura originale può quindi essere espressa come
+
+\begin{equation}
+    H(x) = F(x) + x.
+\end{equation}
+
+In questo modo, invece di apprendere direttamente la mappatura
+$H(x)$, la successione di livelli apprende la funzione residua $F(x)$
+rispetto all'input.
+
+Questa formulazione viene realizzata attraverso le
+\textit{shortcut connections}, collegamenti che saltano uno o più
+livelli della rete. Nel caso più semplice, la shortcut lascia
+invariato l'input $x$ e lo aggiunge direttamente all'output della
+funzione residua $F(x)$. Queste connessioni non introducono parametri
+aggiuntivi né aumentano la complessità computazionale della rete
+\cite{he2016}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.42\textwidth]{images/residual_block.png}
+    \caption{Schema di un blocco residuo con shortcut connection,
+    tratto da \cite{he2016}}
+    \label{fig:residual_block}
+\end{figure}
+
+Tra le diverse architetture basate sul residual learning, nel presente
+lavoro viene utilizzata ResNet-50, una rete composta da 50 livelli.
+Questa architettura utilizza un design a collo di bottiglia
+(\textit{bottleneck design}), nel quale ciascun blocco residuo è
+composto da tre livelli convoluzionali con filtri rispettivamente
+di dimensione $1\times1$, $3\times3$ e $1\times1$
+\cite{he2016}.
+
+I livelli convoluzionali con filtri $1\times1$, posti rispettivamente
+prima e dopo quello con filtri $3\times3$, permettono di ridurre e
+successivamente ripristinare la dimensionalità dei canali, riducendo
+così la complessità computazionale del blocco.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.32\textwidth]
+    {images/resnet_bottleneck.png}
+    \caption{Schema del blocco bottleneck utilizzato in ResNet-50,
+    tratto da \cite{he2016}}
+    \label{fig:resnet_bottleneck}
+\end{figure}
+
+La struttura complessiva di ResNet-50 è organizzata in più gruppi
+di blocchi residuali. Dopo i livelli iniziali di convoluzione e
+pooling, la rete presenta quattro gruppi di blocchi bottleneck,
+ripetuti rispettivamente 3, 4, 6 e 3 volte. La parte 
+finale della rete comprende un livello di average pooling
+seguito da un livello fully connected utilizzato per la
+classificazione \cite{he2016}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]
+    {images/resnet50_architecture.png}
+    \caption{Confronto dell'architettura ResNet-50 con altre
+    architetture ResNet, tratto da \cite{he2016}}
+    \label{fig:resnet50_architecture}
 \end{figure}
