@@ -2,6 +2,56 @@
 
 \section{Dataset}
 
+Per la validazione sperimentale è stato utilizzato il
+\textit{PE Malware Machine Learning Dataset} di Practical Security
+Analytics \cite{lester2021}. Il dataset comprende, oltre ai file PE,
+un file CSV contenente diverse informazioni associate a ciascun
+file, tra cui la lunghezza in byte e l'etichetta che indica
+l'appartenenza alla \textit{Whitelist} o alla \textit{Blacklist},
+permettendo di distinguere rispettivamente i file benigni da quelli
+malevoli. Queste caratteristiche rendono il dataset particolarmente
+adatto al lavoro svolto, poiché mette a disposizione sia i file PE
+originali, necessari per la loro conversione in immagini, sia le
+relative etichette utilizzate per la classificazione.
+
+Il dataset è composto complessivamente da 201.549 file PE, di cui
+86.812 appartenenti alla \textit{Whitelist} e quindi considerati
+benigni, e 114.737 appartenenti alla \textit{Blacklist} e quindi
+considerati malevoli.
+
+Ai fini della validazione sperimentale, il dataset è stato suddiviso
+in un training set, contenente l'80\% dei campioni, e un test set,
+contenente il restante 20\%. La suddivisione è stata effettuata in
+modo stratificato rispetto alla classe, così da mantenere la
+proporzione tra file benigni e malevoli presente nel dataset
+originale.
+
+\begin{table}[!ht]
+    \centering
+    \caption{Distribuzione dei campioni nei set di training e test}
+    \label{tab:dataset_split}
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{lrrr}
+        \toprule
+        \textbf{Insieme} & \textbf{Benigni} & \textbf{Malevoli}
+        & \textbf{Totale} \\
+        \midrule
+        Training & 69.450 & 91.789 & 161.239 \\
+        Test     & 17.362 & 22.948 & 40.310 \\
+        \midrule
+        Totale   & 86.812 & 114.737 & 201.549 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Il training set è stato utilizzato per l'addestramento del modello,
+mentre il test set è stato utilizzato per valutarne le prestazioni,
+dato che contiene dati non utilizzati durante il training e quindi
+permette di valutare il modello su campioni mai utilizzati durante
+l'addestramento.
+
 \section{Set-up e metriche}
+
+
 
 \section{Risultati}
