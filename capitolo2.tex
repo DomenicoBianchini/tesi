@@ -324,3 +324,52 @@ necessari per la larghezza e arrotondando il risultato per eccesso:
 \]
 
 \section{ResNet per classificazione di immagini}
+
+Una volta rappresentati i file PE sotto forma di immagini, il problema
+della distinzione tra file benigni e malevoli può essere affrontato
+come un problema di classificazione di immagini. A questo scopo
+possono essere utilizzate le reti neurali convoluzionali
+(Convolutional Neural Networks, CNN), modelli particolarmente adatti
+all'elaborazione di dati organizzati sotto forma di immagini.
+
+Le CNN sono costituite da una successione di livelli che elaborano
+progressivamente i dati ricevuti in input. Un ruolo centrale è svolto
+dai livelli convoluzionali, nei quali dei filtri analizzano porzioni
+dell'immagine, andando a produrre delle feature map che evidenziano
+determinate caratteristiche presenti nell'immagine. Lo stesso filtro
+viene utilizzato nelle diverse parti dell'immagine, permettendo di
+individuare una determinata caratteristica indipendentemente dalla
+sua posizione \cite{lecun2015}.
+
+Attraverso la successione di più livelli, la rete è in grado di
+individuare caratteristiche progressivamente più complesse
+dell'immagine. I primi livelli possono individuare caratteristiche
+semplici, come colori e contorni, mentre i livelli successivi
+combinano tali informazioni per riconoscere forme e strutture più
+complesse.
+
+Il risultato prodotto dai livelli convoluzionali viene generalmente
+elaborato mediante l'utilizzo di una funzione di attivazione non
+lineare, come la Rectified Linear Unit (ReLU). Questa funzione
+assegna un valore pari a zero agli input negativi e mantiene
+invariati quelli positivi, introducendo non linearità nella rete e
+permettendo di apprendere pattern complessi e velocizzare
+l'addestramento.
+
+Ai livelli convoluzionali possono inoltre essere alternati livelli
+di pooling, utilizzati per ridurre la dimensionalità delle feature
+map. L'operazione di pooling considera delle regioni dell'input e ne
+aggrega i valori, producendo una rappresentazione di dimensioni
+inferiori e permettendo quindi di ridurre la complessità
+computazionale della rete. Tra le principali operazioni di pooling
+vi sono il max pooling, che seleziona il valore massimo presente in
+ciascuna regione considerata, e l'average pooling, che ne calcola
+invece il valore medio \cite{lecun2015}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/cnn_architecture.png}
+    \caption{Esempio della struttura di una rete neurale convoluzionale,
+    tratta da \cite{haque2023}}
+    \label{fig:cnn_architecture}
+\end{figure}
