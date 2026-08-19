@@ -305,11 +305,15 @@ numero di canali:
 
 \[
 \text{numero di pixel} =
-\left\lfloor
+\left\lceil
 \frac{\text{numero di byte del file}}
      {\text{numero di canali}}
-\right\rfloor.
+\right\rceil.
 \]
+
+Nel caso RGB, se il numero di byte del file non è multiplo di tre,
+l'arrotondamento per eccesso permette di considerare anche gli
+eventuali byte rimanenti.
 
 L'altezza viene quindi determinata dividendo il numero di pixel
 necessari per la larghezza e arrotondando il risultato per eccesso:
