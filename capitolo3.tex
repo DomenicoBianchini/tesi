@@ -209,9 +209,11 @@ il test del modello.
 Il modello salvato al termine dell'addestramento è stato quindi
 utilizzato sul test set per ottenere le predizioni finali e valutarne
 le prestazioni. Confrontando le etichette predette dal modello con
-quelle reali è stata costruita la matrice di confusione, dalla quale
-sono stati ricavati i valori di veri positivi (TP), veri negativi
-(TN), falsi positivi (FP) e falsi negativi (FN).
+quelle reali è stata costruita la matrice di confusione, da cui sono
+stati ricavati i valori dei veri positivi (\textit{true positive},
+TP), dei veri negativi (\textit{true negative}, TN), dei falsi
+positivi (\textit{false positive}, FP) e dei falsi negativi
+(\textit{false negative}, FN).
 
 Considerando i file malevoli come classe positiva e quelli benigni
 come classe negativa, i veri positivi (TP) corrispondono ai file
@@ -276,10 +278,11 @@ calcolata come
 \frac{TP + TN}{TP + TN + FP + FN}
 \]
 
-Al termine del test, i valori della matrice di confusione e le
-metriche calcolate sono stati salvati in un file CSV insieme ai
-principali parametri della configurazione sperimentale utilizzata,
-in modo da distinguere le diverse configurazioni tra loro e i
-corrispondenti risultati e confrontarne le prestazioni.
+Una volta completati i test, i valori delle matrici di confusione
+e le metriche calcolate a partire da essi sono stati salvati in un
+file CSV insieme ai principali parametri delle configurazioni
+sperimentali utilizzate, in modo da distinguere le diverse
+configurazioni e i corrispondenti risultati, per poi confrontarne
+le prestazioni.
 
 \section{Risultati}
