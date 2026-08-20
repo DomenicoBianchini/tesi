@@ -288,3 +288,152 @@ configurazioni e i corrispondenti risultati, per poi confrontarne
 le prestazioni.
 
 \section{Risultati}
+
+In questa sezione vengono presentati e confrontati i risultati
+ottenuti dalle 12 configurazioni sperimentali descritte nella
+Sezione 4.2. Le prestazioni sono state valutate sul test set
+attraverso la matrice di confusione e le metriche di precision,
+recall, F1-score e overall accuracy descritte in precedenza.
+
+\subsection{Risultati delle configurazioni sperimentali}
+
+Ciascuna delle 12 configurazioni sperimentali è stata valutata sullo
+stesso test set, composto da 40.310 file PE. Nelle Tabelle
+\ref{tab:risultati_fixed} e \ref{tab:risultati_variable} sono
+riportati i valori della matrice di confusione e l'overall accuracy
+ottenuti rispettivamente dalle configurazioni a dimensione fissa e
+ad altezza variabile.
+
+\begin{table}[H]
+    \centering
+    \caption{Risultati delle configurazioni a dimensione fissa}
+    \label{tab:risultati_fixed}
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{llccccc}
+        \toprule
+        \textbf{Mapping} & \textbf{Rappr.} & \textbf{TN}
+        & \textbf{FP} & \textbf{FN} & \textbf{TP}
+        & \textbf{Overall accuracy} \\
+        \midrule
+        LINEAR     & RGB  & 16652 & 710 & 739 & 22209 & 0.9641 \\
+        ZIGZAG     & RGB  & 16783 & 579 & 958 & 21990 & 0.9619 \\
+        SERPENTINE & RGB  & 16767 & 595 & 821 & 22127 & 0.9649 \\
+        \midrule
+        LINEAR     & GRAY & 16777 & 585 & 638 & 22310 & 0.9697 \\
+        ZIGZAG     & GRAY & 16857 & 505 & 729 & 22219 & 0.9694 \\
+        SERPENTINE & GRAY & 16973 & 389 & 869 & 22079 & 0.9688 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Risultati delle configurazioni ad altezza variabile}
+    \label{tab:risultati_variable}
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{llccccc}
+        \toprule
+        \textbf{Mapping} & \textbf{Rappr.} & \textbf{TN}
+        & \textbf{FP} & \textbf{FN} & \textbf{TP}
+        & \textbf{Overall accuracy} \\
+        \midrule
+        LINEAR     & RGB  & 16951 & 411 & 584 & 22364 & 0.9753 \\
+        ZIGZAG     & RGB  & 17040 & 322 & 688 & 22260 & 0.9749 \\
+        SERPENTINE & RGB  & 16826 & 536 & 427 & 22521 & 0.9761 \\
+        \midrule
+        LINEAR     & GRAY & 16888 & 474 & 565 & 22383 & 0.9742 \\
+        ZIGZAG     & GRAY & 16979 & 383 & 699 & 22249 & 0.9732 \\
+        SERPENTINE & GRAY & 16863 & 499 & 512 & 22436 & 0.9749 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Le Tabelle \ref{tab:metriche_fixed} e
+\ref{tab:metriche_variable} riportano invece i valori di precision,
+recall e F1-score ottenuti per le classi goodware e malware,
+rispettivamente per le configurazioni a dimensione fissa e ad
+altezza variabile.
+
+\begin{table}[H]
+    \centering
+    \caption{Metriche delle configurazioni a dimensione fissa}
+    \label{tab:metriche_fixed}
+    \renewcommand{\arraystretch}{1.3}
+    \resizebox{\textwidth}{!}{%
+        \begin{tabular}{llcccccc}
+            \toprule
+            & & \multicolumn{3}{c}{\textbf{Goodware}}
+            & \multicolumn{3}{c}{\textbf{Malware}} \\
+            \cmidrule(lr){3-5}
+            \cmidrule(lr){6-8}
+            \textbf{Mapping} & \textbf{Rappr.}
+            & \textbf{Precision} & \textbf{Recall}
+            & \textbf{F1-score}
+            & \textbf{Precision} & \textbf{Recall}
+            & \textbf{F1-score} \\
+            \midrule
+            LINEAR     & RGB
+            & 0.9575 & 0.9591 & 0.9583
+            & 0.9690 & 0.9678 & 0.9684 \\
+            ZIGZAG     & RGB
+            & 0.9460 & 0.9667 & 0.9562
+            & 0.9743 & 0.9583 & 0.9662 \\
+            SERPENTINE & RGB
+            & 0.9533 & 0.9657 & 0.9595
+            & 0.9738 & 0.9642 & 0.9690 \\
+            \midrule
+            LINEAR     & GRAY
+            & 0.9634 & 0.9663 & 0.9648
+            & 0.9744 & 0.9722 & 0.9733 \\
+            ZIGZAG     & GRAY
+            & 0.9585 & 0.9709 & 0.9647
+            & 0.9778 & 0.9682 & 0.9730 \\
+            SERPENTINE & GRAY
+            & 0.9513 & 0.9776 & 0.9643
+            & 0.9827 & 0.9621 & 0.9723 \\
+            \bottomrule
+        \end{tabular}%
+    }
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Metriche delle configurazioni ad altezza variabile}
+    \label{tab:metriche_variable}
+    \renewcommand{\arraystretch}{1.3}
+    \resizebox{\textwidth}{!}{%
+        \begin{tabular}{llcccccc}
+            \toprule
+            & & \multicolumn{3}{c}{\textbf{Goodware}}
+            & \multicolumn{3}{c}{\textbf{Malware}} \\
+            \cmidrule(lr){3-5}
+            \cmidrule(lr){6-8}
+            \textbf{Mapping} & \textbf{Rappr.}
+            & \textbf{Precision} & \textbf{Recall}
+            & \textbf{F1-score}
+            & \textbf{Precision} & \textbf{Recall}
+            & \textbf{F1-score} \\
+            \midrule
+            LINEAR     & RGB
+            & 0.9667 & 0.9763 & 0.9715
+            & 0.9820 & 0.9746 & 0.9782 \\
+            ZIGZAG     & RGB
+            & 0.9612 & 0.9815 & 0.9712
+            & 0.9857 & 0.9700 & 0.9778 \\
+            SERPENTINE & RGB
+            & 0.9753 & 0.9691 & 0.9722
+            & 0.9768 & 0.9814 & 0.9791 \\
+            \midrule
+            LINEAR     & GRAY
+            & 0.9676 & 0.9727 & 0.9702
+            & 0.9793 & 0.9754 & 0.9773 \\
+            ZIGZAG     & GRAY
+            & 0.9605 & 0.9779 & 0.9691
+            & 0.9831 & 0.9695 & 0.9763 \\
+            SERPENTINE & GRAY
+            & 0.9705 & 0.9713 & 0.9709
+            & 0.9782 & 0.9777 & 0.9780 \\
+            \bottomrule
+        \end{tabular}%
+    }
+\end{table}
