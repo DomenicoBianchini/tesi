@@ -26,7 +26,7 @@ modo stratificato rispetto alla classe, così da mantenere la
 proporzione tra file benigni e malevoli presente nel dataset
 originale.
 
-\begin{table}[!ht]
+\begin{table}[H]
     \centering
     \caption{Distribuzione dei campioni nei set di training e test}
     \label{tab:dataset_split}
@@ -46,12 +46,240 @@ originale.
 
 Il training set è stato utilizzato per l'addestramento del modello,
 mentre il test set è stato utilizzato per valutarne le prestazioni,
-dato che contiene dati non utilizzati durante il training e quindi
-permette di valutare il modello su campioni mai utilizzati durante
-l'addestramento.
+dato che contiene dati non utilizzati durante il training e permette
+quindi di verificare le prestazioni del modello su nuovi campioni.
 
 \section{Set-up e metriche}
 
+\subsection{Configurazioni sperimentali}
 
+A partire dai file PE presenti nel training set e nel test set sono
+state generate le immagini utilizzate per la validazione sperimentale.
+Sono state considerate tutte le combinazioni tra le tre strategie di
+mapping, \textbf{LINEAR}, \textbf{ZIGZAG} e \textbf{SERPENTINE}, le
+rappresentazioni RGB e in scala di grigi e le due configurazioni
+relative alle dimensioni delle immagini. Nella prima configurazione
+le immagini hanno dimensione fissa pari a $224 \times 224$ pixel,
+mentre nella seconda hanno larghezza fissa e altezza variabile in
+funzione della dimensione del file PE. Sono state quindi valutate
+complessivamente 12 configurazioni sperimentali.
+
+\begin{table}[H]
+    \centering
+    \caption{Configurazioni considerate nella validazione sperimentale}
+    \label{tab:configurazioni_sperimentali}
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{lccc}
+        \toprule
+        \textbf{Mapping} & \textbf{Rappresentazione}
+        & \textbf{Larghezza} & \textbf{Altezza} \\
+        \midrule
+        LINEAR     & RGB  & 224 & 224 \\
+        ZIGZAG     & RGB  & 224 & 224 \\
+        SERPENTINE & RGB  & 224 & 224 \\
+        \midrule
+        LINEAR     & GRAY & 224 & 224 \\
+        ZIGZAG     & GRAY & 224 & 224 \\
+        SERPENTINE & GRAY & 224 & 224 \\
+        \midrule
+        LINEAR     & RGB  & 457 & Variabile \\
+        ZIGZAG     & RGB  & 457 & Variabile \\
+        SERPENTINE & RGB  & 457 & Variabile \\
+        \midrule
+        LINEAR     & GRAY & 792 & Variabile \\
+        ZIGZAG     & GRAY & 792 & Variabile \\
+        SERPENTINE & GRAY & 792 & Variabile \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Nel caso delle immagini a dimensione fissa, i file PE sono stati
+convertiti direttamente in immagini di $224 \times 224$ pixel, che
+è la dimensione utilizzata in input dal modello ResNet-50 adottato
+negli esperimenti. Per questo non è stato necessario effettuare un
+successivo ridimensionamento.
+
+Per le immagini ad altezza variabile, invece, la larghezza è stata
+determinata a partire dalla lunghezza media dei 201.549 file PE del
+dataset, che è risultata pari a 626.445,12 byte. Da questo valore
+sono state ottenute larghezze pari a 457 pixel per la rappresentazione
+RGB e a 792 pixel per quella in scala di grigi, secondo il procedimento
+descritto nel Capitolo 3, mentre l'altezza varia in base alla dimensione
+del singolo file PE.
+
+Le immagini ad altezza variabile sono state successivamente
+ridimensionate a $224 \times 224$ pixel prima di essere fornite al
+modello. Il ridimensionamento è stato effettuato mediante
+interpolazione bilineare, utilizzando \texttt{nn.Upsample} di
+PyTorch \cite{pytorch}.
+
+\begin{figure}[H]
+    \centering
+
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]
+        {images/linear_gray_fixed.png}
+        \caption{Dimensione fissa $224 \times 224$}
+        \label{fig:linear_gray_fixed}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]
+        {images/linear_gray_variable.png}
+        \caption{Altezza variabile dopo il resize a $224 \times 224$}
+        \label{fig:linear_gray_variable}
+    \end{subfigure}
+
+    \caption{Confronto dello stesso file PE con mapping LINEAR in
+    scala di grigi nelle configurazioni a dimensione fissa e ad
+    altezza variabile}
+    \label{fig:confronto_dimensioni_linear_gray}
+\end{figure}
+
+Come si può osservare dalla Figura
+\ref{fig:confronto_dimensioni_linear_gray}, nella configurazione a
+dimensione fissa è visibile la parte dell'immagine generata mediante
+zero-padding, mentre nella configurazione ad altezza variabile
+l'immagine appare maggiormente allungata in altezza in seguito al
+resize a $224 \times 224$ pixel.
+
+\subsection{Preparazione dei dati e addestramento}
+
+Durante la conversione dei file PE è stato inoltre generato, per il
+training set e per il test set, un file CSV contenente il percorso
+di ciascuna immagine e la relativa etichetta. In particolare,
+l'etichetta 0 identifica i file benigni, mentre l'etichetta 1
+identifica i file malevoli.
+Questi file CSV sono stati successivamente utilizzati per associare
+ogni immagine alla classe corrispondente durante il caricamento dei
+dati.
+
+Per il caricamento e la preparazione delle immagini sono stati
+utilizzati \texttt{Dataset} e \texttt{DataLoader} di PyTorch
+\cite{pytorch}. Il dataset associa ciascuna immagine alla relativa
+etichetta utilizzando le informazioni contenute nei file CSV, mentre
+il DataLoader organizza i campioni nei batch da fornire al modello
+durante il training e il test.
+
+Durante il caricamento, tutte le immagini sono state lette in formato
+RGB. Nel caso delle immagini originariamente in scala di grigi, i
+valori dei pixel sono stati quindi replicati sui tre canali, in modo
+da ottenere un'immagine compatibile con i tre canali di input utilizzati
+da ResNet-50.
+
+Prima di essere fornite al modello, le immagini sono state convertite
+in valori compresi tra 0 e 1 e successivamente normalizzate
+utilizzando, per i tre canali, i valori medi
+$[0.485, 0.456, 0.406]$ e le deviazioni standard
+$[0.229, 0.224, 0.225]$, utilizzati dal modello
+\texttt{microsoft/resnet-50} \cite{huggingface_resnet50}.
+
+Il training set descritto nella Sezione 4.1 è stato ulteriormente
+suddiviso, utilizzando l'80\% dei campioni per l'addestramento e il
+restante 20\% per la validazione. Il validation set è stato utilizzato
+per valutare le prestazioni del modello durante le diverse epoche di
+addestramento.
+
+Per tutte le configurazioni sperimentali è stato utilizzato, tramite
+la libreria Hugging Face Transformers, il modello
+\texttt{microsoft/resnet-50}, pre-addestrato sul dataset ImageNet-1k
+\cite{huggingface_resnet50}. Il modello utilizza l'architettura
+ResNet-50 descritta nel Capitolo 3 ed è stato adattato al lavoro
+svolto impostando il numero di classi di output a due, corrispondenti
+ai file benigni e malevoli.
+
+L'addestramento è stato eseguito per 4 epoche utilizzando
+l'ottimizzatore Adam, con un learning rate pari a 0.001 e un batch
+size di 32 immagini, mentre come funzione di loss è stata utilizzata
+la Cross-Entropy Loss, calcolata sia durante il training sia sul
+validation set al termine di ogni epoca. Se la validation loss
+risultava inferiore al valore migliore registrato nelle epoche
+precedenti, il modello veniva salvato sostituendo quello precedente,
+in modo da mantenere al termine dell'addestramento il modello con la
+validation loss più bassa.
+
+Gli esperimenti sono stati eseguiti nell'ambiente Kaggle utilizzando
+le GPU messe a disposizione dalla piattaforma per l'addestramento e
+il test del modello.
+
+\subsection{Valutazione e metriche}
+
+Il modello salvato al termine dell'addestramento è stato quindi
+utilizzato sul test set per ottenere le predizioni finali e valutarne
+le prestazioni. Confrontando le etichette predette dal modello con
+quelle reali è stata costruita la matrice di confusione, dalla quale
+sono stati ricavati i valori di veri positivi (TP), veri negativi
+(TN), falsi positivi (FP) e falsi negativi (FN).
+
+Considerando i file malevoli come classe positiva e quelli benigni
+come classe negativa, i veri positivi (TP) corrispondono ai file
+malevoli classificati correttamente e i veri negativi (TN) a quelli
+benigni classificati correttamente. I falsi positivi (FP) indicano
+invece i file benigni classificati come malevoli, mentre i falsi
+negativi (FN) indicano quelli malevoli classificati come benigni.
+
+A partire dai valori della matrice di confusione sono state calcolate
+precision, recall e F1-score per entrambe le classi.
+
+Per la classe malware, la precision indica la proporzione di file
+effettivamente malevoli tra quelli classificati come tali dal modello
+ed è calcolata come
+
+\[
+\text{Precision}_{malware} =
+\frac{TP}{TP + FP}
+\]
+
+La recall indica invece la proporzione di file malevoli correttamente
+classificati rispetto al totale dei file malevoli:
+
+\[
+\text{Recall}_{malware} =
+\frac{TP}{TP + FN}
+\]
+
+Per la classe goodware, la precision indica la proporzione di file
+effettivamente benigni tra quelli classificati come tali dal modello
+ed è calcolata come
+
+\[
+\text{Precision}_{goodware} =
+\frac{TN}{TN + FN}
+\]
+
+La recall indica invece la proporzione di file benigni correttamente
+classificati rispetto al totale dei file benigni:
+
+\[
+\text{Recall}_{goodware} =
+\frac{TN}{TN + FP}
+\]
+
+L'F1-score combina precision e recall attraverso la loro media
+armonica ed è calcolato, per entrambe le classi, come
+
+\[
+F_1 =
+2 \cdot
+\frac{\text{Precision} \cdot \text{Recall}}
+{\text{Precision} + \text{Recall}}
+\]
+
+Infine, l'overall accuracy indica la proporzione di file classificati
+correttamente rispetto al numero totale di file analizzati ed è
+calcolata come
+
+\[
+\text{Overall Accuracy} =
+\frac{TP + TN}{TP + TN + FP + FN}
+\]
+
+Al termine del test, i valori della matrice di confusione e le
+metriche calcolate sono stati salvati in un file CSV insieme ai
+principali parametri della configurazione sperimentale utilizzata,
+in modo da distinguere le diverse configurazioni tra loro e i
+corrispondenti risultati e confrontarne le prestazioni.
 
 \section{Risultati}
