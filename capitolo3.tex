@@ -202,6 +202,17 @@ precedenti, il modello veniva salvato sostituendo quello precedente,
 in modo da mantenere al termine dell'addestramento il modello con la
 validation loss più bassa.
 
+Durante l'addestramento, in alcune configurazioni è stato inoltre
+osservato che nelle ultime epoche la training loss continuava a
+diminuire mentre la validation loss iniziava ad aumentare. Ad esempio,
+nella configurazione SERPENTINE in scala di grigi a dimensione fissa,
+la training loss è passata da 0.0834 nella terza epoca a 0.0637 nella
+quarta, mentre la validation loss è aumentata leggermente da 0.1076
+a 0.1082. Questo comportamento può indicare un iniziale fenomeno di
+overfitting e, poiché la validation loss della quarta epoca risultava
+superiore a quella della terza, il modello salvato al termine della
+terza epoca non è stato sostituito.
+
 Gli esperimenti sono stati eseguiti nell'ambiente Kaggle utilizzando
 le GPU messe a disposizione dalla piattaforma per l'addestramento e
 il test del modello.
@@ -445,3 +456,169 @@ dalla configurazione SERPENTINE RGB ad altezza variabile, con
 un'overall accuracy pari a 0.9761.
 
 \subsection{Confronto delle configurazioni}
+
+Per confrontare le prestazioni ottenute dalle diverse configurazioni,
+nella seguente Tabella \ref{tab:confronto_accuracy} sono riportati i
+valori di overall accuracy raggruppati in base al mapping, alla
+rappresentazione e alle dimensioni delle immagini.
+
+\begin{table}[H]
+    \centering
+    \caption{Confronto dell'overall accuracy delle configurazioni
+    sperimentali}
+    \label{tab:confronto_accuracy}
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{lcccc}
+        \toprule
+        & \multicolumn{2}{c}{\textbf{Dimensione fissa}}
+        & \multicolumn{2}{c}{\textbf{Altezza variabile}} \\
+        \cmidrule(lr){2-3}
+        \cmidrule(lr){4-5}
+        \textbf{Mapping}
+        & \textbf{RGB} & \textbf{GRAY}
+        & \textbf{RGB} & \textbf{GRAY} \\
+        \midrule
+        LINEAR     & 0.9641 & 0.9697 & 0.9753 & 0.9742 \\
+        ZIGZAG     & 0.9619 & 0.9694 & 0.9749 & 0.9732 \\
+        SERPENTINE & 0.9649 & 0.9688 & 0.9761 & 0.9749 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Dal confronto emerge innanzitutto che le configurazioni ad altezza
+variabile hanno ottenuto un'overall accuracy superiore alle
+corrispondenti configurazioni a dimensione fissa per tutti e tre i
+mapping, considerando sia la rappresentazione RGB sia quella in
+scala di grigi.
+
+Nel caso della rappresentazione RGB, l'overall accuracy è aumentata
+di 1,12 punti percentuali per LINEAR, 1,30 punti percentuali per
+ZIGZAG e 1,12 punti percentuali per SERPENTINE dalla configurazione
+a dimensione fissa a quella ad altezza variabile. Per la
+rappresentazione in scala di grigi, l'aumento è stato invece pari a
+0,45 punti percentuali per LINEAR, 0,38 per ZIGZAG e 0,61 per
+SERPENTINE.
+
+Confrontando le due rappresentazioni, nelle configurazioni a
+dimensione fissa la scala di grigi ha ottenuto un'overall accuracy
+superiore rispetto alla rappresentazione RGB per tutti e tre i
+mapping, in particolare con una differenza di 0,56 punti percentuali
+per LINEAR, 0,75 per ZIGZAG e 0,39 per SERPENTINE.
+
+Nelle configurazioni ad altezza variabile si osserva invece un
+andamento opposto, con la rappresentazione RGB che ha ottenuto
+un'overall accuracy superiore rispetto alla scala di grigi per tutti
+e tre i mapping, in particolare con una differenza di 0,11 punti
+percentuali per LINEAR, 0,17 per ZIGZAG e 0,12 per SERPENTINE.
+
+Per quanto riguarda le strategie di mapping, le differenze risultano
+più contenute e non emerge una strategia che ottiene risultati
+nettamente migliori rispetto alle altre. Tra le configurazioni a
+dimensione fissa, LINEAR ha ottenuto il valore più elevato nella
+rappresentazione in scala di grigi, con un'overall accuracy pari a
+0.9697, mentre SERPENTINE ha ottenuto il risultato migliore nella
+rappresentazione RGB, con un valore pari a 0.9649. In particolare,
+tra i tre mapping si registra una differenza massima di 0,09 punti
+percentuali per la rappresentazione in scala di grigi e di 0,30
+punti percentuali per quella RGB, considerando in ciascun caso il
+valore dell'overall accuracy più elevato e quello più basso.
+
+Anche nelle configurazioni ad altezza variabile le differenze tra i
+mapping sono limitate. SERPENTINE ha ottenuto il valore più elevato
+sia con la rappresentazione RGB sia con quella in scala di grigi,
+con un'overall accuracy pari rispettivamente a 0.9761 e 0.9749. In
+particolare, tra i tre mapping si registra una differenza massima di
+0,12 punti percentuali per la rappresentazione RGB e di 0,17 punti
+percentuali per quella in scala di grigi.
+
+Considerando complessivamente le 12 configurazioni sperimentali, il
+valore più elevato di overall accuracy è stato quindi ottenuto dalla
+configurazione SERPENTINE RGB ad altezza variabile, con un valore
+pari a 0.9761, corrispondente al 97,61\%.
+
+\subsection{Discussione dei risultati}
+
+I risultati raccolti mostrano che le configurazioni ad altezza
+variabile hanno ottenuto prestazioni superiori rispetto a quelle
+a dimensione fissa per tutti e tre i mapping e per entrambe le
+rappresentazioni. Questo risultato può essere ricondotto alle
+differenze nella rappresentazione dei file PE nelle due configurazioni,
+infatti nelle configurazioni a dimensione fissa il numero di pixel
+disponibili è prestabilito e limita quindi la quantità di byte che
+può essere rappresentata, mentre nelle configurazioni ad altezza
+variabile l'altezza viene determinata in base alla dimensione del
+singolo file, permettendo di rappresentarne tutti i byte prima del
+successivo resize a $224 \times 224$ pixel.
+
+Inoltre, nel caso dei file PE di dimensioni ridotte, nelle
+configurazioni a dimensione fissa la parte dell'immagine non occupata
+dai byte del file viene completata mediante zero-padding, come
+mostrato nella Figura
+\ref{fig:confronto_dimensioni_linear_gray}, mentre nelle
+configurazioni ad altezza variabile l'altezza si adatta alla
+dimensione del file, riducendo la quantità di padding necessaria,
+che potrebbe influire sulle prestazioni del modello.
+
+Confrontando le rappresentazioni RGB e in scala di grigi, nelle
+configurazioni a dimensione fissa la rappresentazione in scala di
+grigi ha ottenuto prestazioni migliori per tutti e tre i mapping,
+mentre nelle configurazioni ad altezza variabile si osserva il
+comportamento opposto, con risultati leggermente migliori per la
+rappresentazione RGB.
+
+Una possibile spiegazione di questo comportamento può essere legata
+al diverso numero di byte rappresentati da ciascun pixel, in
+particolare nella rappresentazione RGB ogni pixel contiene tre byte
+del file PE, mentre nella rappresentazione in scala di grigi ne
+contiene uno. Di conseguenza, nelle configurazioni ad altezza
+variabile le due rappresentazioni richiedono un diverso numero di
+pixel per rappresentare lo stesso file e, insieme alle diverse
+larghezze utilizzate, pari a 457 pixel per RGB e 792 pixel per la
+scala di grigi, producono immagini con dimensioni diverse prima del resize
+a $224 \times 224$ pixel, che potrebbero influire sulle prestazioni
+ottenute. Un esempio delle due rappresentazioni ottenute dallo stesso
+file PE è mostrato nella Figura
+\ref{fig:confronto_variable_gray_rgb}.
+
+\begin{figure}[H]
+    \centering
+
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]
+        {images/linear_gray_variable_comparison.png}
+        \caption{Rappresentazione GRAY}
+        \label{fig:linear_gray_variable_comparison}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]
+        {images/linear_rgb_variable_comparison.png}
+        \caption{Rappresentazione RGB}
+        \label{fig:linear_rgb_variable_comparison}
+    \end{subfigure}
+
+    \caption{Confronto dello stesso file PE nelle rappresentazioni
+    GRAY e RGB con mapping LINEAR e altezza variabile, dopo il resize
+    a $224 \times 224$ pixel}
+    \label{fig:confronto_variable_gray_rgb}
+\end{figure}
+
+Per quanto riguarda le strategie di mapping, nonostante le differenze
+contenute osservate tra le tre strategie, SERPENTINE ha ottenuto le
+prestazioni migliori in tre delle quattro combinazioni considerate
+tra rappresentazione e dimensioni delle immagini. Questo risultato
+potrebbe essere legato alla disposizione dei byte utilizzata da
+SERPENTINE che, come descritto nel Capitolo 3, permette di concentrare
+in una stessa area dell'immagine le informazioni appartenenti alla
+parte iniziale del file PE, in cui è contenuto l'header, invece di
+distribuirle lungo le prime righe dell'immagine.
+Questa diversa disposizione delle informazioni presenti nell'header
+potrebbe aver contribuito alle prestazioni di SERPENTINE anche se le
+differenze tra i mapping rimangono limitate.
+
+Nel complesso, i risultati indicano che la configurazione delle
+dimensioni delle immagini ha avuto un'influenza maggiore sulle
+prestazioni rispetto alla strategia di mapping utilizzata, per la
+quale sono state osservate differenze più contenute.
