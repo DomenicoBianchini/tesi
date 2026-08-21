@@ -1,1 +1,49 @@
 \chapter{Conclusioni e sviluppi futuri}
+
+In questo lavoro è stato affrontato il problema della classificazione
+di file Windows PE come benigni o malevoli attraverso la loro
+rappresentazione sotto forma di immagini e tramite l'utilizzo di una
+ResNet-50. In particolare, sono state confrontate le strategie di
+mapping LINEAR, ZIGZAG e SERPENTINE, considerando sia immagini RGB
+sia immagini in scala di grigi e due diverse configurazioni delle
+dimensioni, a dimensione fissa e ad altezza variabile.
+
+Nel complesso, i risultati ottenuti hanno mostrato prestazioni
+elevate per tutte le configurazioni considerate, evidenziando
+risultati migliori per le configurazioni ad altezza variabile
+rispetto alle corrispondenti configurazioni a dimensione fissa.
+In particolare, la migliore overall accuracy è stata ottenuta
+dalla configurazione SERPENTINE RGB ad altezza variabile, con un
+valore pari al 97,61\%.
+
+L'approccio basato sulla rappresentazione dei file PE come immagini
+e sulla loro classificazione mediante ResNet-50 ha permesso di
+ottenere buone prestazioni sul dataset considerato, mostrando inoltre
+come la scelta delle dimensioni delle immagini possa avere un ruolo
+importante nelle prestazioni del modello.
+
+Come possibile sviluppo futuro, il lavoro potrebbe essere esteso
+utilizzando dataset differenti, in modo da verificare se le
+prestazioni rimangano costanti anche su altri insiemi di file PE.
+
+Un ulteriore sviluppo potrebbe riguardare il confronto della
+ResNet-50 utilizzata in questo lavoro con altre versioni di ResNet,
+in modo da valutare l'influenza della profondità della rete sulle
+prestazioni ottenute.
+
+Potrebbero inoltre essere valutate diverse modalità per determinare
+le dimensioni delle immagini, ad esempio calcolandole in funzione
+della lunghezza in byte del singolo file PE, invece di utilizzare
+una larghezza comune determinata a partire dalla lunghezza media in
+byte dei file del dataset.
+
+In questo lavoro, il preprocessing delle immagini, compreso il resize,
+è stato effettuato prima di fornire le immagini in input alla
+ResNet-50, mentre potrebbe essere interessante valutare come cambiano
+le prestazioni utilizzando \texttt{AutoImageProcessor} di Hugging Face
+\cite{huggingface_autoimageprocessor} con la configurazione associata
+al modello \texttt{microsoft/resnet-50}.
+
+Questi possibili sviluppi permetterebbero di proseguire il lavoro
+svolto e di approfondire l'utilizzo della rappresentazione dei file
+PE come immagini per la classificazione di file benigni e malevoli.
