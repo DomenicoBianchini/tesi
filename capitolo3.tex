@@ -570,14 +570,22 @@ Una possibile spiegazione di questo comportamento può essere legata
 al diverso numero di byte rappresentati da ciascun pixel, in
 particolare nella rappresentazione RGB ogni pixel contiene tre byte
 del file PE, mentre nella rappresentazione in scala di grigi ne
-contiene uno. Di conseguenza, nelle configurazioni ad altezza
-variabile le due rappresentazioni richiedono un diverso numero di
-pixel per rappresentare lo stesso file e, insieme alle diverse
-larghezze utilizzate, pari a 457 pixel per RGB e 792 pixel per la
-scala di grigi, producono immagini con dimensioni diverse prima del resize
-a $224 \times 224$ pixel, che potrebbero influire sulle prestazioni
-ottenute. Un esempio delle due rappresentazioni ottenute dallo stesso
-file PE è mostrato nella Figura
+contiene uno. Nelle configurazioni a dimensione fissa, entrambe pari
+a $224 \times 224$ pixel, questo comporta che la parte iniziale del
+file occupi una porzione maggiore dell'immagine nella rappresentazione
+in scala di grigi, quindi, dato che nella parte iniziale dei file PE
+è contenuto l'header, che comprende informazioni sulla struttura del
+file, questo aspetto potrebbe aver contribuito ai risultati ottenuti.
+
+Nelle configurazioni ad altezza variabile, invece, le due
+rappresentazioni richiedono un diverso numero totale di pixel per
+rappresentare lo stesso file e, insieme alle diverse larghezze
+utilizzate, pari a 457 pixel per RGB e 792 pixel per la scala di grigi,
+producono immagini con dimensioni diverse prima del resize a
+$224 \times 224$ pixel. Di conseguenza, durante il ridimensionamento
+può verificarsi una deformazione differente delle immagini, che potrebbe
+influire sulle prestazioni ottenute. Un esempio delle due
+rappresentazioni ottenute dallo stesso file PE è mostrato nella Figura
 \ref{fig:confronto_variable_gray_rgb}.
 
 \begin{figure}[H]
