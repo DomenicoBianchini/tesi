@@ -205,10 +205,10 @@ analisi \cite{egele2012}.
 
 \begin{table}[!ht]
     \centering
-    \caption{Confronto tra analisi statica e analisi dinamica dei malware}
+    \caption{Confronto tra analisi statica e dinamica dei malware,
+    rielaborato da \cite{mutithu2026}}
     \label{tab:static_dynamic_analysis}
     \renewcommand{\arraystretch}{1.3}
-
     \begin{tabularx}{\textwidth}{
         >{\raggedright\arraybackslash\bfseries}p{0.22\textwidth}
         >{\raggedright\arraybackslash}X
@@ -223,27 +223,28 @@ analisi \cite{egele2012}.
         Esecuzione &
         Non richiesta &
         Richiesta \\
-        \addlinespace
 
+        \addlinespace
         Informazioni analizzate &
         Rappresentazione binaria del programma &
         Comportamento durante l'esecuzione \\
-        \addlinespace
 
-        Esempi di feature &
-        Informazioni ricavate dal contenuto del file &
-        Chiamate API, comunicazioni di rete, memoria e CPU \\
         \addlinespace
-
         Vantaggi &
         Tempi di analisi inferiori &
         Può contribuire al rilevamento di malware sconosciuti ed è
         meno vulnerabile alle tecniche di offuscamento \\
-        \addlinespace
 
+        \addlinespace
         Limiti &
         Può essere ostacolata da tecniche di packing o cifratura &
         Può richiedere tempi di analisi maggiori \\
+
+        \addlinespace
+        Rischi &
+        Non comporta i rischi legati all'esecuzione del malware &
+        Richiede un ambiente isolato per limitare i rischi legati
+        all'esecuzione del malware \\
 
         \bottomrule
     \end{tabularx}
