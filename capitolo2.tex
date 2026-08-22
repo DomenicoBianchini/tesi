@@ -206,12 +206,12 @@ righe dell'immagine come avviene nei mapping precedenti.
     \label{fig:mapping_examples}
 \end{figure}
 
-\begin{table}[!ht]
+\begin{table}[H]
     \centering
+    \small
     \caption{Confronto tra le strategie di mapping considerate}
     \label{tab:mapping_comparison}
     \renewcommand{\arraystretch}{1.3}
-
     \begin{tabularx}{\textwidth}{
         >{\raggedright\arraybackslash\bfseries}p{0.22\textwidth}
         >{\raggedright\arraybackslash}X
@@ -220,19 +220,21 @@ righe dell'immagine come avviene nei mapping precedenti.
         \toprule
         \textbf{Mapping} &
         \textbf{Disposizione} &
-        \textbf{Effetto della disposizione} \\
+        \textbf{Caratteristiche} \\
         \midrule
 
         LINEAR &
         Da sinistra verso destra, riga per riga &
-        Interrompe la continuità tra righe consecutive \\
-        \addlinespace
+        Mantiene l'ordine sequenziale dei byte, ma interrompe la continuità
+        tra righe consecutive \\
 
+        \addlinespace
         ZIGZAG &
         Direzione alternata tra righe consecutive &
-        Mantiene adiacenti i pixel corrispondenti a byte consecutivi \\
-        \addlinespace
+        Mantiene la continuità tra righe consecutive, preservando
+        l'adiacenza tra i pixel corrispondenti a byte consecutivi \\
 
+        \addlinespace
         SERPENTINE &
         Percorso alternato lungo le diagonali &
         Mantiene l'adiacenza tra byte consecutivi e concentra la parte
