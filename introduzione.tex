@@ -19,12 +19,12 @@ In particolare, negli ultimi anni hanno assunto particolare importanza le tecnic
 su Machine Learning e Deep Learning, che permettono di individuare più efficacemente
 anche nuove varianti di malware, superando alcuni dei limiti dei metodi tradizionali.
 
-L'utilizzo del Deep Learning consente, inoltre, di analizzare i dati attraverso
-diverse forme di rappresentazione, in particolare la rappresentazione
-visuale dei file malware, ottenuta trasformando le informazioni contenute
-nei file binari in immagini. In questo modo è possibile applicare tecniche
-e modelli di Deep Learning per la classificazione delle immagini, con
-l'obiettivo di distinguere file malevoli da file benigni.
+\textcolor{red}{Le tecniche di Deep Learning per Computer Vision possono
+essere usate con una} rappresentazione visuale dei file, ottenuta
+trasformando le informazioni contenute nei file binari in immagini.
+In questo modo è possibile applicare tecniche di Deep Learning per la
+classificazione delle immagini, con l'obiettivo di distinguere file
+malevoli da file benigni.
 
 \section{Obiettivi della tesi}
 
@@ -35,7 +35,8 @@ successivamente un modello di Deep Learning per la loro classificazione.
 
 In particolare, questo lavoro analizza e confronta tre diverse strategie
 per la conversione dei file PE in immagini, ossia LINEAR, ZIGZAG e
-SERPENTINE, che si differenziano in base al tipo di mapping utilizzato
+SERPENTINE, che si differenziano in base al tipo di
+\textcolor{red}{trasformazione} utilizzato
 per costruire l'immagine. Per ciascuna strategia vengono confrontate
 sia immagini RGB sia immagini in scala di grigi (\textit{grayscale}),
 generate secondo due diverse configurazioni, a dimensione fissa oppure
@@ -45,9 +46,10 @@ ResNet-50, con l'obiettivo di distinguere i file malevoli da quelli
 benigni.
 
 Il confronto dei risultati ottenuti dalle diverse configurazioni e
-strategie di mapping permette infine di valutarne le prestazioni e
-individuare quale configurazione risulti più efficace nella
-classificazione dei file PE.
+strategie di mapping permette infine di valutarne le prestazioni
+\textcolor{red}{in termini di accuratezza} e
+individuare quale configurazione risulti più \textcolor{red}{accurata}
+nella classificazione dei file PE.
 
 \section{Struttura della tesi}
 
@@ -64,12 +66,13 @@ presentando le diverse strategie di mapping e le configurazioni utilizzate
 per la loro rappresentazione, oltre a introdurre le reti neurali convoluzionali
 e l'architettura della ResNet utilizzata per la successiva classificazione.
 
-Il Capitolo 4 è dedicato alla validazione empirica del lavoro e descrive
-il dataset utilizzato, il set-up sperimentale e le metriche adottate per
-la valutazione. Vengono inoltre analizzati e confrontati i risultati
+Il Capitolo 4 \textcolor{red}{descrive la} validazione empirica
+\textcolor{red}{della tecnica proposta}, il dataset utilizzato,
+il set-up sperimentale e le metriche adottate per la valutazione.
+\textcolor{red}{Nel capitolo vengono, quindi, illustrati} i risultati
 ottenuti dalle diverse configurazioni utilizzate, con lo scopo di
-individuare quella con le migliori prestazioni, ovvero quella più
-efficace nella classificazione dei file PE.
+individuare \textcolor{red}{la configurazione che permette di addestrare
+il modello più accurato} nella classificazione dei file PE.
 
 Infine, il Capitolo 5 riassume i principali risultati ottenuti e
 presenta le conclusioni del lavoro e i possibili sviluppi futuri.
