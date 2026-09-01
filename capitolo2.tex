@@ -81,10 +81,9 @@ l'immagine.
 
 Linh et al. \cite{linh2024} analizzano differenti modalità di
 disposizione dei pixel, considerando tre diverse strategie di mapping
-denominate Normal, Zigzag e Serpentine.
+denominate Linear, Zigzag e Serpentine.
 
-Il mapping Normal, indicato nel presente lavoro come \textbf{LINEAR},
-dispone i pixel seguendo l'ordine originale dei byte del file PE,
+Il mapping \textbf{LINEAR} dispone i pixel seguendo l'ordine originale dei byte del file PE,
 procedendo da sinistra verso destra e dall'alto verso il basso.
 Questa disposizione, tuttavia, interrompe la continuità tra righe
 consecutive, poiché l'ultimo pixel di una riga e il primo della
@@ -192,7 +191,7 @@ righe dell'immagine come avviene nei mapping precedenti.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.65\textwidth]{images/mapping_paths.png}
-    \caption{Disposizione dei pixel secondo i mapping Normal, Zigzag
+    \caption{Disposizione dei pixel secondo i mapping Linear, Zigzag
     e Serpentine, tratta da \cite{linh2024}}
     \label{fig:mapping_paths}
 \end{figure}
@@ -201,7 +200,7 @@ righe dell'immagine come avviene nei mapping precedenti.
     \centering
     \includegraphics[width=0.65\textwidth]{images/mapping_examples.png}
     \caption{Esempi di immagini malware ottenute utilizzando
-    rispettivamente i mapping Normal, Zigzag e Serpentine, tratte da
+    rispettivamente i mapping Linear, Zigzag e Serpentine, tratte da
     \cite{linh2024}}
     \label{fig:mapping_examples}
 \end{figure}
