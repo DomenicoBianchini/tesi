@@ -8,20 +8,18 @@ eseguibili. Inizialmente progettato come formato eseguibile standard
 per i sistemi Windows, il formato PE, fin dalla sua introduzione, ha
 subito diverse modifiche, anche in seguito al passaggio ai sistemi
 Windows a 64 bit.
-
 La struttura di un file PE contiene le informazioni necessarie al
 sistema operativo Windows per caricare e gestire il codice eseguibile.
 Oltre al codice da eseguire, un file PE contiene infatti metadati e
 altre informazioni organizzate secondo una struttura ben definita,
 la cui conoscenza riveste un ruolo importante nell'ambito dell'analisi
 dei malware.
-
 In particolare, la struttura di un file PE è organizzata in tre parti
-principali \cite{microsoftPE}, come mostrato nella
+\cite{microsoftPE}, come mostrato nella
 Figura~\ref{fig:pe_structure}:
 
 \begin{itemize}
-    \item \textbf{Header}: contiene le informazioni principali relative
+    \item \textbf{Header}: contiene le informazioni relative
     al file PE e al suo caricamento in memoria. L'header è a sua volta
     suddiviso nelle seguenti parti:
 
@@ -56,7 +54,7 @@ Figura~\ref{fig:pe_structure}:
     oppure scrivibile;
 
     \item \textbf{Sezioni}: contengono il codice e i dati del file PE.
-    Tra le sezioni comunemente presenti si trovano:
+    \textcolor{red}{Le sezioni comunemente presenti includono:}
 
     \begin{itemize}
         \item \texttt{.text}: contiene il codice eseguibile;
@@ -84,19 +82,15 @@ Figura~\ref{fig:pe_structure}:
 
 \FloatBarrier
 
-L'header riveste un ruolo importante nella classificazione dei malware,
-dato che le informazioni in esso contenute risultano tra quelle
-che contribuiscono maggiormente al processo di classificazione
-\cite{zhang2024}.
-
-L'analisi della struttura delle sezioni può essere utile anche
-nell'ambito del rilevamento dei malware, dato che il codice malevolo
-può essere nascosto all'interno di sezioni insolite oppure possono
-essere aggiunte ulteriori sezioni con l'obiettivo di rendere più
-complessa l'analisi del file. Inoltre, i file malware possono presentare
-anomalie nella struttura e nelle caratteristiche del formato PE rispetto
-ai file benigni, rendendo queste informazioni rilevanti per la loro
-individuazione \cite{bai2014}.
+\textcolor{red}{Le informazioni incluse nell'header \cite{zhang2024},
+ma anche le informazioni incluse nelle sezioni sono utili} anche
+nell'ambito del rilevamento dei malware. \textcolor{red}{In particolare, il}
+codice malevolo può essere nascosto all'interno di sezioni insolite
+oppure possono essere aggiunte ulteriori sezioni con l'obiettivo di
+rendere più complessa l'analisi del file. Inoltre, i file malware possono
+presentare anomalie nella struttura e nelle caratteristiche del formato
+PE rispetto ai file benigni, rendendo queste informazioni rilevanti per
+la loro individuazione \cite{bai2014}.
 
 \vspace{0.5cm}
 
@@ -115,44 +109,46 @@ non sono esclusive, poiché uno stesso malware può presentare
 contemporaneamente caratteristiche appartenenti a più tipologie
 \cite{egele2012}.
 
-Tra le principali tipologie di malware rientrano i \textit{worm}, che
-sono programmi in grado di essere eseguiti in modo indipendente e con
-la capacità di propagarsi verso altri sistemi. I worm possono inoltre
-essere utilizzati per creare \textit{botnet}, impiegate per l'invio
-di messaggi di spam o per effettuare attacchi di tipo Distributed
-Denial of Service (DDoS), nei quali più computer infettati da worm
-agiscono in modo coordinato per esaurire le risorse di un sistema o
-la sua banda di rete.
+\textcolor{red}{Alcune categorie di malware sono descritte nel seguito:}
+\begin{itemize}
+    \item \textit{worm}: sono programmi in grado di essere eseguiti
+    in modo indipendente e con la capacità di propagarsi verso altri
+    sistemi. I worm possono inoltre essere utilizzati per creare
+    \textit{botnet}, impiegate per l'invio di messaggi di spam o per
+    effettuare attacchi di tipo Distributed Denial of Service (DDoS),
+    nei quali più computer infettati da worm agiscono in modo coordinato
+    per esaurire le risorse di un sistema o la sua banda di rete.
 
-I \textit{virus}, a differenza dei worm, non possono essere eseguiti
-in modo indipendente, ma inseriscono il proprio codice malevolo
-all'interno di altri programmi e si attivano quando viene eseguito
-il programma infettato. Possono inoltre propagarsi infettando altri
-file presenti nel sistema e, attraverso file presenti su server
-condivisi, diffondersi anche verso altri computer.
+    \item \textit{virus}: a differenza dei worm, non possono essere
+    eseguiti in modo indipendente, ma inseriscono il proprio codice
+    malevolo all'interno di altri programmi e si attivano quando viene
+    eseguito il programma infettato. Possono inoltre propagarsi
+    infettando altri file presenti nel sistema e, attraverso file
+    presenti su server condivisi, diffondersi anche verso altri computer.
 
-I \textit{Trojan horse} sono programmi che si presentano come software
-legittimi, ma che eseguono operazioni malevole in background. Una volta
-installati, possono ad esempio scaricare altri malware, modificare le
-impostazioni del sistema o infettare altri file.
+    \item \textit{Trojan horse}: sono programmi che si presentano come
+    software legittimi, ma che eseguono operazioni malevole in background.
+    Una volta installati, possono ad esempio scaricare altri malware,
+    modificare le impostazioni del sistema o infettare altri file.
 
-Gli \textit{spyware} sono malware utilizzati per raccogliere informazioni
-sensibili dal sistema infetto e trasmetterle all'attaccante. Le
-informazioni raccolte possono comprendere credenziali di accesso,
-dati bancari, pagine web visitate oppure il contenuto di documenti
-ed e-mail.
+    \item \textit{spyware}: sono malware utilizzati per raccogliere
+    informazioni sensibili dal sistema infetto e trasmetterle
+    all'attaccante. Le informazioni raccolte possono comprendere
+    credenziali di accesso, dati bancari, pagine web visitate oppure
+    il contenuto di documenti ed e-mail.
 
-I \textit{bot} permettono a un attaccante, chiamato \textit{bot master},
-di controllare da remoto il sistema infetto. Un insieme di bot
-controllati dallo stesso \textit{bot master} costituisce una
-\textit{botnet}, che può essere utilizzata, ad esempio, per l'invio
-di messaggi di spam.
+    \item \textit{bot}: permettono a un attaccante, chiamato
+    \textit{bot master}, di controllare da remoto il sistema infetto.
+    Un insieme di bot controllati dallo stesso \textit{bot master}
+    costituisce una \textit{botnet}, che può essere utilizzata, ad
+    esempio, per l'invio di messaggi di spam.
 
-Infine, i \textit{rootkit} sono malware la cui principale caratteristica
-è quella di nascondere determinate informazioni all'utente del sistema,
-come processi, file o connessioni di rete. Per questo motivo, molti malware
-utilizzano tecniche proprie dei rootkit per nascondere la propria presenza
-all'interno del sistema.
+    \item \textit{rootkit}: sono malware la cui principale caratteristica
+    è quella di nascondere determinate informazioni all'utente del
+    sistema, come processi, file o connessioni di rete. Per questo motivo,
+    molti malware utilizzano tecniche proprie dei rootkit per nascondere
+    la propria presenza all'interno del sistema.
+\end{itemize}
 
 \subsection{Tecniche di rilevamento}
 
@@ -160,7 +156,6 @@ Il rilevamento dei malware può essere effettuato attraverso diverse
 tecniche. Uno degli approcci tradizionalmente utilizzati, anche dagli
 antivirus, è quello basato sulle firme, in cui i file vengono confrontati
 con un insieme di firme associate a malware già conosciuti.
-
 Questo approccio presenta tuttavia alcuni limiti, in particolare le firme
 vengono generalmente create da analisti, richiedendo tempo e potendo
 essere soggette a errori. Inoltre, i metodi basati sulle firme non sono
@@ -177,18 +172,18 @@ l'analisi dinamica e l'analisi statica, in base all'esecuzione o meno
 del programma durante la raccolta delle feature, ovvero delle
 caratteristiche utilizzate per effettuare l'analisi
 \cite{zhang2024}.
-
-L'analisi dinamica prevede l'esecuzione del programma e l'osservazione
-del suo comportamento durante l'esecuzione. In questo modo possono
+\textcolor{red}{In particolare, l'analisi dinamica} prevede
+l'esecuzione del programma e l'osservazione del suo comportamento
+durante l'esecuzione. In questo modo possono
 essere raccolte diverse informazioni, tra cui le sequenze delle
 chiamate API, le comunicazioni di rete, lo stato della memoria e
 della CPU. Questo tipo di analisi può inoltre contribuire al
 rilevamento di malware precedentemente sconosciuti e risulta meno
 vulnerabile alle tecniche di offuscamento del codice. 
-
-Tuttavia, presenta alcuni limiti, dato che ogni campione deve essere
-eseguito per un determinato periodo di tempo e l'analisi può riguardare
-soltanto un singolo percorso di esecuzione del programma \cite{bai2014}.
+Tuttavia, \textcolor{red}{l'analisi dinamica presenta} alcuni limiti,
+dato che ogni campione deve essere eseguito per un determinato periodo
+di tempo e l'analisi può riguardare soltanto un singolo percorso di
+esecuzione del programma \cite{bai2014}.
 
 A differenza dell'analisi dinamica, l'analisi statica permette di
 analizzare un programma senza eseguirlo e, per questo motivo, richiede
@@ -196,12 +191,17 @@ tempi inferiori per l'analisi. Dato che generalmente il codice sorgente
 dei malware non è disponibile, le tecniche di analisi statica
 applicabili devono ricavare le informazioni direttamente dalla
 rappresentazione binaria del programma.
-
-Anche l'analisi statica presenta alcuni limiti, dato che lavorare
-direttamente sulla rappresentazione binaria di un programma può
-risultare complesso. Inoltre, i malware possono utilizzare tecniche
+Anche l'analisi statica presenta alcuni limiti, dato che
+\textcolor{red}{l'esame della} rappresentazione binaria di un programma
+\textcolor{red}{può portare ad ignorare informazioni rese note durante
+l'analisi comportamentale}.
+Inoltre, i malware possono utilizzare tecniche
 in grado di modificare il programma e ostacolare questo tipo di
 analisi \cite{egele2012}.
+
+\textcolor{red}{La Tabella~\ref{tab:static_dynamic_analysis} mostra
+un confronto tra le principali caratteristiche dell'analisi statica
+e dell'analisi dinamica.}
 
 \begin{table}[!ht]
     \centering
@@ -251,8 +251,9 @@ analisi \cite{egele2012}.
 \end{table}
 
 I limiti degli approcci descritti in precedenza, insieme alla crescente
-complessità e quantità dei malware, hanno favorito l'utilizzo di
-tecniche basate sul Machine Learning. In particolare, queste tecniche
-permettono di apprendere modelli e pattern a partire dalle feature
-estratte dai malware, con l'obiettivo di supportarne il rilevamento
-e l'analisi \cite{ucci2019}.
+complessità e quantità dei malware, hanno favorito l'utilizzo di tecniche
+basate sul \textcolor{red}{Machine Learning e, più recentemente, Deep
+Learning}. In particolare, queste tecniche permettono di apprendere
+modelli e pattern a partire \textcolor{red}{da una rappresentazione dei
+file Windows PE (malware e goodware)}, con l'obiettivo di supportarne il
+rilevamento e l'analisi \cite{ucci2019}.
