@@ -28,6 +28,7 @@ associato a un pixel, il cui valore determina il livello di intensità,
 dove 0 corrisponde al nero e 255 al bianco. I valori ottenuti vengono
 quindi organizzati in una matrice bidimensionale che costituisce
 l'immagine.
+Questo processo di trasformazione è schematizzato nella Figura~\ref{fig:pe_to_grayscale}.
 
 \begin{figure}[H]
     \centering
@@ -42,12 +43,12 @@ possono essere utilizzati per costruire un'immagine RGB. In questo
 caso, ciascun pixel è composto da tre canali, rosso, verde e blu,
 ognuno dei quali assume, come nel caso precedente, un valore compreso
 tra 0 e 255.
-
 Guo et al. \cite{guo2020} utilizzano una rappresentazione RGB in cui
 tre byte consecutivi vengono raggruppati e associati, nello stesso
 ordine, ai tre canali di un pixel. Il primo byte determina quindi
 il valore del canale rosso, il secondo quello del canale verde e
 il terzo quello del canale blu.
+Le due rappresentazioni sono mostrate nella Figura~\ref{fig:pe_grayscale_rgb}.
 
 \begin{figure}[H]
     \centering
@@ -89,6 +90,7 @@ Questa disposizione, tuttavia, interrompe la continuità tra righe
 consecutive, poiché l'ultimo pixel di una riga e il primo della
 successiva, pur corrispondendo a byte consecutivi, non risultano
 adiacenti nell'immagine.
+Il funzionamento del mapping LINEAR è descritto nel seguente pseudocodice.
 
 \begin{algorithm}[H]
     \caption{Pseudocodice del mapping LINEAR}
@@ -116,6 +118,7 @@ da sinistra verso destra, mentre quella successiva da destra verso
 sinistra. In questo modo viene mantenuta la continuità tra righe
 consecutive, poiché i pixel corrispondenti a byte consecutivi
 rimangono adiacenti nell'immagine.
+Il funzionamento del mapping ZIGZAG è descritto nel seguente pseudocodice.
 
 \begin{algorithm}[H]
     \caption{Pseudocodice del mapping ZIGZAG}
@@ -147,6 +150,7 @@ sulle diagonali della matrice, alternandone la direzione di
 percorrenza. Questa disposizione consente di mantenere adiacenti
 nell'immagine i pixel corrispondenti a byte consecutivi, distribuendoli
 però lungo le diagonali anziché lungo le righe.
+Il funzionamento del mapping SERPENTINE è descritto nel seguente pseudocodice.
 
 \begin{algorithm}[H]
     \caption{Pseudocodice del mapping SERPENTINE}
@@ -183,14 +187,17 @@ però lungo le diagonali anziché lungo le righe.
 
 Nel caso dei file PE, questa disposizione permette inoltre di
 concentrare in una stessa area dell'immagine le informazioni
-appartenenti alla parte iniziale del file, in cui è contenuto
-l'header, che comprende informazioni significative per la
-classificazione dei file PE, invece di distribuirle lungo le prime
+appartenenti alla parte iniziale del file, invece di distribuirle lungo le prime
 righe dell'immagine come avviene nei mapping precedenti.
+
+La disposizione dei pixel nelle tre strategie di mapping è illustrata
+nelle Figure~\ref{fig:mapping_paths} e~\ref{fig:mapping_examples},
+mentre la Tabella~\ref{tab:mapping_comparison} mette a confronto
+le caratteristiche delle diverse strategie.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.65\textwidth]{images/mapping_paths.png}
+    \includegraphics[width=0.85\textwidth]{images/mapping_paths.png}
     \caption{Disposizione dei pixel secondo i mapping Linear, Zigzag
     e Serpentine, tratta da \cite{linh2024}}
     \label{fig:mapping_paths}
@@ -198,7 +205,7 @@ righe dell'immagine come avviene nei mapping precedenti.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.65\textwidth]{images/mapping_examples.png}
+    \includegraphics[width=0.9\textwidth]{images/mapping_examples.png}
     \caption{Esempi di immagini malware ottenute utilizzando
     rispettivamente i mapping Linear, Zigzag e Serpentine, tratte da
     \cite{linh2024}}
@@ -267,16 +274,17 @@ Nataraj et al. \cite{nataraj2011}, in particolare, scelgono la
 larghezza dell'immagine in base alla dimensione del file, utilizzando
 diversi intervalli prestabiliti, mentre l'altezza dipende dal rapporto
 tra il numero di byte da rappresentare e la larghezza scelta.
+Gli intervalli di dimensione dei file e le corrispondenti larghezze utilizzate sono riportati nella Figura~\ref{fig:nataraj_widths}.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.48\textwidth]{images/nataraj_widths.png}
+    \includegraphics[width=0.6\textwidth]{images/nataraj_widths.png}
     \caption{Larghezze delle immagini utilizzate in funzione della
     dimensione dei file, tratta da \cite{nataraj2011}}
     \label{fig:nataraj_widths}
 \end{figure}
 
-Nel presente lavoro vengono utilizzate entrambe le configurazioni
+\noindent Nel presente lavoro vengono utilizzate entrambe le configurazioni
 per le dimensioni delle immagini, a dimensione fissa oppure con
 altezza variabile. Nella prima configurazione le immagini hanno
 dimensioni fisse pari a 224×224 pixel. Nella seconda, invece, la
@@ -294,12 +302,11 @@ larghezza è stata calcolata tramite la seguente formula:
 \right\rceil.
 \]
 
-Dividendo la lunghezza media dei file per il numero di canali si
+\noindent Dividendo la lunghezza media dei file per il numero di canali si
 ottiene il numero medio di pixel necessari, considerando che a ciascun
 pixel corrisponde un byte nella rappresentazione in scala di grigi e
 tre byte nella rappresentazione RGB. La radice quadrata di tale valore
 viene quindi utilizzata per determinare la larghezza dell'immagine.
-
 Una volta fissata la larghezza, per ciascun file viene prima calcolato
 il numero di pixel necessari in base al numero di byte del file e al
 numero di canali:
@@ -312,10 +319,9 @@ numero di canali:
 \right\rceil.
 \]
 
-Nel caso RGB, se il numero di byte del file non è multiplo di tre,
+\noindent Nel caso RGB, se il numero di byte del file non è multiplo di tre,
 l'arrotondamento per eccesso permette di considerare anche gli
 eventuali byte rimanenti.
-
 L'altezza viene quindi determinata dividendo il numero di pixel
 necessari per la larghezza e arrotondando il risultato per eccesso:
 
