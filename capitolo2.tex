@@ -287,10 +287,13 @@ Gli intervalli di dimensione dei file e le corrispondenti larghezze utilizzate s
 \noindent Nel presente lavoro vengono utilizzate entrambe le configurazioni
 per le dimensioni delle immagini, a dimensione fissa oppure con
 altezza variabile. Nella prima configurazione le immagini hanno
-dimensioni fisse pari a 224×224 pixel. Nella seconda, invece, la
-larghezza viene determinata a partire dalla lunghezza media dei file
-del dataset e dal numero di canali della rappresentazione. La
-larghezza è stata calcolata tramite la seguente formula:
+dimensioni fisse pari a 224×224 pixel.
+Nella seconda, invece, a differenza dell'approccio adottato da Nataraj et al.~\cite{nataraj2011},
+in cui la larghezza viene scelta in funzione della dimensione del singolo file,
+la larghezza viene determinata una sola volta a partire dalla lunghezza media
+dei file del dataset e dal numero di canali della rappresentazione e viene
+quindi mantenuta fissa per tutti i file appartenenti alla stessa configurazione.
+La larghezza è stata calcolata tramite la seguente formula:
 
 \[
 \text{larghezza} =
