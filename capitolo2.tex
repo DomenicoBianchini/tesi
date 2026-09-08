@@ -324,7 +324,7 @@ numero di canali:
 \noindent Nel caso RGB, se il numero di byte del file non è multiplo di tre,
 l'arrotondamento per eccesso permette di considerare anche gli
 eventuali byte rimanenti.
-L'altezza viene quindi determinata dividendo il numero di pixel
+L'altezza viene quindi determinata individualmente per ciascun file dividendo il numero di pixel
 necessari per la larghezza e arrotondando il risultato per eccesso:
 
 \[
@@ -354,7 +354,6 @@ determinate caratteristiche presenti nell'immagine. Lo stesso filtro
 viene utilizzato nelle diverse parti dell'immagine, permettendo di
 individuare una determinata caratteristica indipendentemente dalla
 sua posizione \cite{lecun2015}.
-
 Attraverso la successione di più livelli, la rete è in grado di
 individuare caratteristiche progressivamente più complesse
 dell'immagine. I primi livelli possono individuare caratteristiche
@@ -385,6 +384,8 @@ livelli completamente connessi (\textit{fully connected}), nei quali
 ogni neurone è collegato a tutti i neuroni del livello precedente.
 Questi livelli utilizzano le caratteristiche estratte dai livelli
 precedenti per produrre l'output utilizzato per la classificazione.
+Nella Figura~\ref{fig:cnn_architecture} viene mostrata la tipica architettura
+di una rete neurale convoluzionale e la successione dei livelli descritti.
 
 \begin{figure}[H]
     \centering
@@ -402,7 +403,6 @@ differenti. Tra queste rientra la Residual Network (ResNet), proposta
 da He et al. \cite{he2016}, che consente l'addestramento di reti
 estremamente profonde, cioè caratterizzate da un elevato numero di
 livelli.
-
 L'aumento della profondità di una rete neurale non comporta tuttavia
 necessariamente un miglioramento delle prestazioni. Con l'aumentare
 del numero di livelli può infatti verificarsi il cosiddetto
@@ -411,7 +411,6 @@ inizialmente di migliorare e successivamente tende a diminuire. Come
 osservato dagli autori, questo fenomeno non è necessariamente dovuto
 all'overfitting, poiché l'aggiunta di ulteriori livelli può portare
 anche a un peggioramento delle prestazioni durante l'addestramento.
-
 Per affrontare questo problema, ResNet introduce il concetto di
 \textit{residual learning}. In una rete tradizionale, una successione
 di livelli apprende direttamente una mappatura $H(x)$ a partire
@@ -439,6 +438,8 @@ livelli della rete. Nel caso più semplice, la shortcut lascia
 invariato l'input $x$ e lo aggiunge direttamente all'output della
 funzione residua $F(x)$. Queste connessioni non introducono parametri
 aggiuntivi né aumentano la complessità computazionale della rete.
+Nella Figura~\ref{fig:residual_block} è mostrata la struttura tipica di un
+blocco residuo con questa configurazione.
 
 \begin{figure}[H]
     \centering
@@ -455,11 +456,10 @@ Questa architettura utilizza un design a collo di bottiglia
 composto da tre livelli convoluzionali con filtri rispettivamente
 di dimensione $1\times1$, $3\times3$ e $1\times1$
 \cite{he2016}.
-
 I livelli convoluzionali con filtri $1\times1$, posti rispettivamente
 prima e dopo quello con filtri $3\times3$, permettono di ridurre e
 successivamente ripristinare la dimensionalità dei canali, riducendo
-così la complessità computazionale del blocco.
+così la complessità computazionale del blocco, come illustrato nella Figura~\ref{fig:resnet_bottleneck}.
 
 \begin{figure}[H]
     \centering
@@ -476,7 +476,9 @@ pooling, la rete presenta quattro gruppi di blocchi bottleneck,
 ripetuti rispettivamente 3, 4, 6 e 3 volte. La parte
 finale della rete comprende un livello di average pooling
 seguito da un livello fully connected utilizzato per la
-classificazione \cite{he2016}.
+classificazione.
+Nella Figura~\ref{fig:resnet50_architecture} viene illustrato il confronto dettagliato
+tra la struttura a 50 livelli e le altre configurazioni proposte in~\cite{he2016}.
 
 \begin{figure}[H]
     \centering
