@@ -421,15 +421,15 @@ dall'input $x$. ResNet modifica questo approccio facendo apprendere
 ai livelli una funzione residua $F(x)$, che rappresenta la differenza
 tra la mappatura desiderata e l'input:
 
-\begin{equation}
-    F(x) = H(x) - x.
-\end{equation}
+\[
+F(x) = H(x) - x.
+\]
 
 La mappatura originale può quindi essere espressa come
 
-\begin{equation}
-    H(x) = F(x) + x.
-\end{equation}
+\[
+H(x) = F(x) + x.
+\]
 
 In questo modo, invece di apprendere direttamente la mappatura
 $H(x)$, la successione di livelli apprende la funzione residua $F(x)$
