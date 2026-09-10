@@ -5,13 +5,13 @@
 Un possibile approccio per l'analisi statica dei malware consiste nel
 rappresentare il contenuto binario dei file sotto forma di immagini.
 In questo modo, la sequenza di byte che compone un file può essere
-convertita in una rappresentazione visiva, sulla quale è possibile
-applicare tecniche di analisi e classificazione delle immagini.
+convertita in una rappresentazione \textcolor{red}{da elaborare con tecniche}
+\textcolor{red}{di computer vision per la classificazione di immagini.}
 
 \subsection{Rappresentazione in scala di grigi e RGB}
 
 Nataraj et al. \cite{nataraj2011} hanno proposto un approccio in cui
-il contenuto binario di un file malware viene riorganizzato in una
+il contenuto binario di un file viene riorganizzato in una
 matrice e rappresentato sotto forma di un'immagine in scala di grigi.
 Gli autori hanno osservato che malware appartenenti alla stessa
 famiglia possono presentare immagini simili a livello di layout e
@@ -19,7 +19,6 @@ texture. A partire da questa osservazione, hanno quindi utilizzato
 caratteristiche estratte dalle immagini per effettuare la
 classificazione, senza richiedere il disassemblaggio del codice o
 l'esecuzione dei file analizzati.
-
 In particolare, la conversione in immagine del file PE viene eseguita
 leggendo il contenuto del file come una sequenza di byte, ciascuno dei
 quali viene rappresentato attraverso un valore intero compreso tra 0
@@ -33,12 +32,12 @@ Questo processo di trasformazione è schematizzato nella Figura~\ref{fig:pe_to_g
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.55\textwidth]{images/pe_to_grayscale.png}
-    \caption{Principali fasi della conversione di un file PE in
+    \caption{Fasi della conversione di un file PE in
     un'immagine in scala di grigi, tratta da \cite{zhang2024}}
     \label{fig:pe_to_grayscale}
 \end{figure}
 
-Oltre alla rappresentazione in scala di grigi, i byte del file PE
+\textcolor{red}{In alternativa} alla rappresentazione in scala di grigi, i byte del file PE
 possono essere utilizzati per costruire un'immagine RGB. In questo
 caso, ciascun pixel è composto da tre canali, rosso, verde e blu,
 ognuno dei quali assume, come nel caso precedente, un valore compreso
@@ -73,7 +72,7 @@ Le due rappresentazioni sono mostrate nella Figura~\ref{fig:pe_grayscale_rgb}.
 \end{figure}
 
 Nel presente lavoro di tesi vengono considerate entrambe le
-rappresentazioni descritte, in scala di grigi e RGB. Una volta
+rappresentazioni \textcolor{red}{di file PE come immagini}, in scala di grigi e RGB. Una volta
 ottenuti i valori dei pixel a partire dai byte del file PE, occorre
 stabilire come disporli all'interno della matrice che costituisce
 l'immagine.
@@ -90,7 +89,7 @@ Questa disposizione, tuttavia, interrompe la continuità tra righe
 consecutive, poiché l'ultimo pixel di una riga e il primo della
 successiva, pur corrispondendo a byte consecutivi, non risultano
 adiacenti nell'immagine.
-Il funzionamento del mapping LINEAR è descritto nel seguente pseudocodice.
+Il funzionamento del mapping LINEAR è descritto \textcolor{red}{nell'Algoritmo 3.1.}
 
 \begin{algorithm}[H]
     \caption{Pseudocodice del mapping LINEAR}
@@ -118,7 +117,7 @@ da sinistra verso destra, mentre quella successiva da destra verso
 sinistra. In questo modo viene mantenuta la continuità tra righe
 consecutive, poiché i pixel corrispondenti a byte consecutivi
 rimangono adiacenti nell'immagine.
-Il funzionamento del mapping ZIGZAG è descritto nel seguente pseudocodice.
+Il funzionamento del mapping ZIGZAG è descritto \textcolor{red}{nell'Algoritmo 3.2.}
 
 \begin{algorithm}[H]
     \caption{Pseudocodice del mapping ZIGZAG}
@@ -150,7 +149,7 @@ sulle diagonali della matrice, alternandone la direzione di
 percorrenza. Questa disposizione consente di mantenere adiacenti
 nell'immagine i pixel corrispondenti a byte consecutivi, distribuendoli
 però lungo le diagonali anziché lungo le righe.
-Il funzionamento del mapping SERPENTINE è descritto nel seguente pseudocodice.
+Il funzionamento del mapping SERPENTINE è descritto \textcolor{red}{nell'Algoritmo 3.3.}
 
 \begin{algorithm}[H]
     \caption{Pseudocodice del mapping SERPENTINE}
@@ -189,8 +188,7 @@ Nel caso dei file PE, questa disposizione permette inoltre di
 concentrare in una stessa area dell'immagine le informazioni
 appartenenti alla parte iniziale del file, invece di distribuirle lungo le prime
 righe dell'immagine come avviene nei mapping precedenti.
-
-La disposizione dei pixel nelle tre strategie di mapping è illustrata
+La disposizione dei pixel nelle tre strategie di \textcolor{red}{dislocazione dei pixel nella trasformazione di file PE in immagini} è illustrata
 nelle Figure~\ref{fig:mapping_paths} e~\ref{fig:mapping_examples},
 mentre la Tabella~\ref{tab:mapping_comparison} mette a confronto
 le caratteristiche delle diverse strategie.
@@ -258,12 +256,12 @@ avere dimensioni differenti e, di conseguenza, anche il numero di
 pixel ottenuti a partire dalla sequenza di byte può variare da un
 file all'altro.
 
-Una possibile soluzione consiste nel fissare a priori le dimensioni
+Un possibile \textcolor{red}{approccio} consiste nel fissare a priori le dimensioni
 dell'immagine, stabilendo quindi un numero massimo di pixel
 disponibili. Se i dati ottenuti dal file non sono sufficienti a
 riempire l'intera immagine, è possibile applicare lo zero-padding,
 completando i pixel rimanenti con valori pari a zero. Al contrario,
-se la quantità di dati supera la capacità dell'immagine, i byte che
+se la quantità di dati supera la capacità dell'immagine, i byte \textcolor{red}{in coda al file che non}
 non possono essere rappresentati vengono eliminati mediante
 troncamento \cite{nguyen2023}.
 
@@ -274,19 +272,19 @@ Nataraj et al. \cite{nataraj2011}, in particolare, scelgono la
 larghezza dell'immagine in base alla dimensione del file, utilizzando
 diversi intervalli prestabiliti, mentre l'altezza dipende dal rapporto
 tra il numero di byte da rappresentare e la larghezza scelta.
-Gli intervalli di dimensione dei file e le corrispondenti larghezze utilizzate sono riportati nella Figura~\ref{fig:nataraj_widths}.
+Gli intervalli di dimensione dei file e le corrispondenti larghezze utilizzate sono riportati nella \textcolor{red}{Tabella}~\ref{fig:nataraj_widths}.
 
-\begin{figure}[H]
+\begin{table}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{images/nataraj_widths.png}
     \caption{Larghezze delle immagini utilizzate in funzione della
     dimensione dei file, tratta da \cite{nataraj2011}}
     \label{fig:nataraj_widths}
-\end{figure}
+\end{table}
 
-\noindent Nel presente lavoro vengono utilizzate entrambe le configurazioni
-per le dimensioni delle immagini, a dimensione fissa oppure con
-altezza variabile. Nella prima configurazione le immagini hanno
+\noindent \textcolor{red}{In questa tesi si considerano} entrambe le \textcolor{red}{strategie per la definizione delle}
+dimensioni delle immagini, \textcolor{red}{ossia, immagini a} dimensione fissa oppure \textcolor{red}{immagini ad}
+altezza variabile. Nella prima \textcolor{red}{strategia} le immagini hanno
 dimensioni fisse pari a 224×224 pixel.
 Nella seconda, invece, a differenza dell'approccio adottato da Nataraj et al.~\cite{nataraj2011},
 in cui la larghezza viene scelta in funzione della dimensione del singolo file,
