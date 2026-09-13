@@ -322,7 +322,7 @@ numero di canali:
 
 \newpage
 
-\noindent Nel caso RGB, se il numero di byte del file non è multiplo di tre,
+\noindent Nel \textcolor{red}{caso di immagini} RGB, se il numero di byte del file non è multiplo di tre,
 l'arrotondamento per eccesso permette di considerare anche gli
 eventuali byte rimanenti.
 L'altezza viene quindi determinata individualmente per ciascun file dividendo il numero di pixel
@@ -347,21 +347,20 @@ all'elaborazione di dati organizzati sotto forma di immagini.
 
 \subsection{Reti neurali convoluzionali}
 
-Le CNN sono costituite da una successione di livelli che elaborano
+Le \textcolor{red}{reti CNN~\cite{lecun2015}} sono costituite da una successione di livelli che elaborano
 progressivamente i dati ricevuti in input. Un ruolo centrale è svolto
-dai livelli convoluzionali, nei quali dei filtri analizzano porzioni
+\textcolor{red}{nelle reti CNN dai} livelli convoluzionali, nei quali dei filtri analizzano porzioni
 dell'immagine, andando a produrre delle feature map che evidenziano
 determinate caratteristiche presenti nell'immagine. Lo stesso filtro
 viene utilizzato nelle diverse parti dell'immagine, permettendo di
 individuare una determinata caratteristica indipendentemente dalla
-sua posizione \cite{lecun2015}.
+sua posizione.
 Attraverso la successione di più livelli, la rete è in grado di
 individuare caratteristiche progressivamente più complesse
 dell'immagine. I primi livelli possono individuare caratteristiche
 semplici, come colori e contorni, mentre i livelli successivi
 combinano tali informazioni per riconoscere forme e strutture più
 complesse.
-
 Il risultato prodotto dai livelli convoluzionali viene generalmente
 elaborato mediante l'utilizzo di una funzione di attivazione non
 lineare, come la Rectified Linear Unit (ReLU). Questa funzione
@@ -369,7 +368,6 @@ assegna un valore pari a zero agli input negativi e mantiene
 invariati quelli positivi, introducendo non linearità nella rete e
 permettendo di apprendere pattern complessi e velocizzare
 l'addestramento.
-
 Ai livelli convoluzionali possono inoltre essere alternati livelli
 di pooling, utilizzati per ridurre la dimensionalità delle feature
 map. L'operazione di pooling considera delle regioni dell'input e ne
@@ -379,7 +377,6 @@ computazionale della rete. Tra le principali operazioni di pooling
 vi sono il max pooling, che seleziona il valore massimo presente in
 ciascuna regione considerata, e l'average pooling, che ne calcola
 invece il valore medio \cite{lecun2015}.
-
 Nella parte finale di una CNN possono essere presenti uno o più
 livelli completamente connessi (\textit{fully connected}), nei quali
 ogni neurone è collegato a tutti i neuroni del livello precedente.
@@ -412,7 +409,7 @@ inizialmente di migliorare e successivamente tende a diminuire. Come
 osservato dagli autori, questo fenomeno non è necessariamente dovuto
 all'overfitting, poiché l'aggiunta di ulteriori livelli può portare
 anche a un peggioramento delle prestazioni durante l'addestramento.
-Per affrontare questo problema, ResNet introduce il concetto di
+Per affrontare questo problema, \textcolor{red}{una rete ResNet usa} il concetto di
 \textit{residual learning}. In una rete tradizionale, una successione
 di livelli apprende direttamente una mappatura $H(x)$ a partire
 dall'input $x$. ResNet modifica questo approccio facendo apprendere
@@ -423,7 +420,7 @@ tra la mappatura desiderata e l'input:
 F(x) = H(x) - x.
 \]
 
-La mappatura originale può quindi essere espressa come
+La mappatura originale può quindi essere espressa \textcolor{red}{come formulato nella seguente formula:}
 
 \[
 H(x) = F(x) + x.
@@ -432,7 +429,6 @@ H(x) = F(x) + x.
 In questo modo, invece di apprendere direttamente la mappatura
 $H(x)$, la successione di livelli apprende la funzione residua $F(x)$
 rispetto all'input.
-
 Questa formulazione viene realizzata attraverso le
 \textit{shortcut connections}, collegamenti che saltano uno o più
 livelli della rete. Nel caso più semplice, la shortcut lascia
@@ -450,8 +446,9 @@ blocco residuo con questa configurazione.
     \label{fig:residual_block}
 \end{figure}
 
-Tra le diverse architetture basate sul residual learning, nel presente
-lavoro viene utilizzata ResNet-50, una rete composta da 50 livelli.
+\textcolor{red}{Esistono diverse} architetture basate sul residual learning, 
+\textcolor{red}{in questa tesi è stata} utilizzata ResNet-50, 
+\textcolor{red}{che è una} rete \textcolor{red}{ResNet composta} da 50 livelli.
 Questa architettura utilizza un design a collo di bottiglia
 (\textit{bottleneck design}), nel quale ciascun blocco residuo è
 composto da tre livelli convoluzionali con filtri rispettivamente
@@ -478,14 +475,14 @@ ripetuti rispettivamente 3, 4, 6 e 3 volte. La parte
 finale della rete comprende un livello di average pooling
 seguito da un livello fully connected utilizzato per la
 classificazione.
-Nella Figura~\ref{fig:resnet50_architecture} viene illustrato il confronto dettagliato
+Nella Tabella~\ref{fig:resnet50_architecture} viene illustrato il confronto
 tra la struttura a 50 livelli e le altre configurazioni proposte in~\cite{he2016}.
 
-\begin{figure}[H]
+\begin{table}[H]
     \centering
     \includegraphics[width=0.95\textwidth]
     {images/resnet50_architecture.png}
     \caption{Confronto dell'architettura ResNet-50 con altre
     architetture ResNet, tratto da \cite{he2016}}
     \label{fig:resnet50_architecture}
-\end{figure}
+\end{table}
