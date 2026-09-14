@@ -13,12 +13,10 @@ malevoli. Queste caratteristiche rendono il dataset particolarmente
 adatto al lavoro svolto, poiché mette a disposizione sia i file PE
 originali, necessari per la loro conversione in immagini, sia le
 relative etichette utilizzate per la classificazione.
-
 Il dataset è composto complessivamente da 201.549 file PE, di cui
 86.812 appartenenti alla \textit{Whitelist} e quindi considerati
 benigni, e 114.737 appartenenti alla \textit{Blacklist} e quindi
 considerati malevoli.
-
 Ai fini della validazione sperimentale, il dataset è stato suddiviso
 in un training set, contenente l'80\% dei campioni, e un test set,
 contenente il restante 20\%. La suddivisione è stata effettuata in
@@ -98,7 +96,6 @@ convertiti direttamente in immagini di $224 \times 224$ pixel, che
 è la dimensione utilizzata in input dal modello ResNet-50 adottato
 negli esperimenti. Per questo non è stato necessario effettuare un
 successivo ridimensionamento.
-
 Per le immagini ad altezza variabile, invece, la larghezza è stata
 determinata a partire dalla lunghezza media dei 201.549 file PE del
 dataset, che è risultata pari a 626.445,12 byte. Da questo valore
@@ -106,7 +103,6 @@ sono state ottenute larghezze pari a 457 pixel per la rappresentazione
 RGB e a 792 pixel per quella in scala di grigi, secondo il procedimento
 descritto nel Capitolo 3, mentre l'altezza varia in base alla dimensione
 del singolo file PE.
-
 Le immagini ad altezza variabile sono state successivamente
 ridimensionate a $224 \times 224$ pixel prima di essere fornite al
 modello. Il ridimensionamento è stato effettuato mediante
@@ -157,27 +153,23 @@ identifica i file malevoli.
 Questi file CSV sono stati successivamente utilizzati per associare
 ogni immagine alla classe corrispondente durante il caricamento dei
 dati.
-
 Per il caricamento e la preparazione delle immagini sono stati
 utilizzati \texttt{Dataset} e \texttt{DataLoader} di PyTorch
 \cite{pytorch}. Il dataset associa ciascuna immagine alla relativa
 etichetta utilizzando le informazioni contenute nei file CSV, mentre
 il DataLoader organizza i campioni nei batch da fornire al modello
 durante il training e il test.
-
 Durante il caricamento, tutte le immagini sono state lette in formato
 RGB. Nel caso delle immagini originariamente in scala di grigi, i
 valori dei pixel sono stati quindi replicati sui tre canali, in modo
 da ottenere un'immagine compatibile con i tre canali di input utilizzati
 da ResNet-50.
-
 Prima di essere fornite al modello, le immagini sono state convertite
 in valori compresi tra 0 e 1 e successivamente normalizzate
 utilizzando, per i tre canali, i valori medi
 $[0.485, 0.456, 0.406]$ e le deviazioni standard
 $[0.229, 0.224, 0.225]$, utilizzati dal modello
 \texttt{microsoft/resnet-50} \cite{huggingface_resnet50_preprocessor}.
-
 Il training set descritto nella Sezione 4.1 è stato ulteriormente
 suddiviso, utilizzando l'80\% dei campioni per l'addestramento e il
 restante 20\% per la validazione. Il validation set è stato utilizzato
@@ -191,7 +183,6 @@ la libreria Hugging Face Transformers, il modello
 ResNet-50 descritta nel Capitolo 3 ed è stato adattato al lavoro
 svolto impostando il numero di classi di output a due, corrispondenti
 ai file benigni e malevoli.
-
 L'addestramento è stato eseguito per 4 epoche utilizzando
 l'ottimizzatore Adam, con un learning rate pari a 0.001 e un batch
 size di 32 immagini, mentre come funzione di loss è stata utilizzata
@@ -201,7 +192,6 @@ risultava inferiore al valore migliore registrato nelle epoche
 precedenti, il modello veniva salvato sostituendo quello precedente,
 in modo da mantenere al termine dell'addestramento il modello con la
 validation loss più bassa.
-
 Durante l'addestramento, in alcune configurazioni è stato inoltre
 osservato che nelle ultime epoche la training loss continuava a
 diminuire mentre la validation loss iniziava ad aumentare. Ad esempio,
@@ -212,7 +202,6 @@ a 0.1082. Questo comportamento può indicare un iniziale fenomeno di
 overfitting e, poiché la validation loss della quarta epoca risultava
 superiore a quella della terza, il modello salvato al termine della
 terza epoca non è stato sostituito.
-
 Gli esperimenti sono stati eseguiti nell'ambiente Kaggle utilizzando
 le GPU messe a disposizione dalla piattaforma per l'addestramento e
 il test del modello.
@@ -227,20 +216,17 @@ stati ricavati i valori dei veri positivi (\textit{true positive},
 TP), dei veri negativi (\textit{true negative}, TN), dei falsi
 positivi (\textit{false positive}, FP) e dei falsi negativi
 (\textit{false negative}, FN).
-
 Considerando i file malevoli come classe positiva e quelli benigni
 come classe negativa, i veri positivi (TP) corrispondono ai file
 malevoli classificati correttamente e i veri negativi (TN) a quelli
 benigni classificati correttamente. I falsi positivi (FP) indicano
 invece i file benigni classificati come malevoli, mentre i falsi
 negativi (FN) indicano quelli malevoli classificati come benigni.
-
 A partire dai valori della matrice di confusione sono state calcolate
 precision, recall e F1-score per entrambe le classi.
-
 Per la classe malware, la precision indica la proporzione di file
 effettivamente malevoli tra quelli classificati come tali dal modello
-ed è calcolata come
+ed è calcolata come:
 
 \[
 \text{Precision}_{malware} =
@@ -257,7 +243,7 @@ classificati rispetto al totale dei file malevoli:
 
 Per la classe goodware, corrispondente ai file benigni, la precision
 indica la proporzione di file effettivamente benigni tra quelli
-classificati come tali dal modello ed è calcolata come
+classificati come tali dal modello ed è calcolata come:
 
 \[
 \text{Precision}_{goodware} =
@@ -273,7 +259,7 @@ classificati rispetto al totale dei file benigni:
 \]
 
 L'F1-score combina precision e recall attraverso la loro media
-armonica ed è calcolato, per entrambe le classi, come
+armonica ed è calcolato, per entrambe le classi, come:
 
 \[
 F_1 =
@@ -284,7 +270,7 @@ F_1 =
 
 Infine, l'overall accuracy indica la proporzione di file classificati
 correttamente rispetto al numero totale di file analizzati ed è
-calcolata come
+calcolata come:
 
 \[
 \text{Overall Accuracy} =
@@ -490,7 +476,6 @@ variabile hanno ottenuto un'overall accuracy superiore alle
 corrispondenti configurazioni a dimensione fissa per tutti e tre i
 mapping, considerando sia la rappresentazione RGB sia quella in
 scala di grigi.
-
 Nel caso della rappresentazione RGB, l'overall accuracy è aumentata
 di 1,12 punti percentuali per LINEAR, 1,30 punti percentuali per
 ZIGZAG e 1,12 punti percentuali per SERPENTINE dalla configurazione
@@ -498,13 +483,11 @@ a dimensione fissa a quella ad altezza variabile. Per la
 rappresentazione in scala di grigi, l'aumento è stato invece pari a
 0,45 punti percentuali per LINEAR, 0,38 per ZIGZAG e 0,61 per
 SERPENTINE.
-
 Confrontando le due rappresentazioni, nelle configurazioni a
 dimensione fissa la scala di grigi ha ottenuto un'overall accuracy
 superiore rispetto alla rappresentazione RGB per tutti e tre i
 mapping, in particolare con una differenza di 0,56 punti percentuali
 per LINEAR, 0,75 per ZIGZAG e 0,39 per SERPENTINE.
-
 Nelle configurazioni ad altezza variabile si osserva invece un
 andamento opposto, con la rappresentazione RGB che ha ottenuto
 un'overall accuracy superiore rispetto alla scala di grigi per tutti
@@ -522,7 +505,6 @@ tra i tre mapping si registra una differenza massima di 0,09 punti
 percentuali per la rappresentazione in scala di grigi e di 0,30
 punti percentuali per quella RGB, considerando in ciascun caso il
 valore dell'overall accuracy più elevato e quello più basso.
-
 Anche nelle configurazioni ad altezza variabile le differenze tra i
 mapping sono limitate. SERPENTINE ha ottenuto il valore più elevato
 sia con la rappresentazione RGB sia con quella in scala di grigi,
@@ -549,7 +531,6 @@ può essere rappresentata, mentre nelle configurazioni ad altezza
 variabile l'altezza viene determinata in base alla dimensione del
 singolo file, permettendo di rappresentarne tutti i byte prima del
 successivo resize a $224 \times 224$ pixel.
-
 Inoltre, nel caso dei file PE di dimensioni ridotte, nelle
 configurazioni a dimensione fissa la parte dell'immagine non occupata
 dai byte del file viene completata mediante zero-padding, come
@@ -558,14 +539,12 @@ mostrato nella Figura
 configurazioni ad altezza variabile l'altezza si adatta alla
 dimensione del file, riducendo la quantità di padding necessaria,
 che potrebbe influire sulle prestazioni del modello.
-
 Confrontando le rappresentazioni RGB e in scala di grigi, nelle
 configurazioni a dimensione fissa la rappresentazione in scala di
 grigi ha ottenuto prestazioni migliori per tutti e tre i mapping,
 mentre nelle configurazioni ad altezza variabile si osserva il
 comportamento opposto, con risultati leggermente migliori per la
 rappresentazione RGB.
-
 Una possibile spiegazione di questo comportamento può essere legata
 al diverso numero di byte rappresentati da ciascun pixel, in
 particolare nella rappresentazione RGB ogni pixel contiene tre byte
@@ -576,7 +555,6 @@ file occupi una porzione maggiore dell'immagine nella rappresentazione
 in scala di grigi, quindi, dato che nella parte iniziale dei file PE
 è contenuto l'header, che comprende informazioni sulla struttura del
 file, questo aspetto potrebbe aver contribuito ai risultati ottenuti.
-
 Nelle configurazioni ad altezza variabile, invece, le due
 rappresentazioni richiedono un diverso numero totale di pixel per
 rappresentare lo stesso file e, insieme alle diverse larghezze
