@@ -22,7 +22,7 @@ in un training set, contenente l'80\% dei campioni, e un test set,
 contenente il restante 20\%. La suddivisione è stata effettuata in
 modo stratificato rispetto alla classe, così da mantenere la
 proporzione tra file benigni e malevoli presente nel dataset
-originale.
+originale, come mostrato nella Tabella \ref{tab:dataset_split}.
 
 \begin{table}[H]
     \centering
@@ -55,12 +55,13 @@ A partire dai file PE presenti nel training set e nel test set sono
 state generate le immagini utilizzate per la validazione sperimentale.
 Sono state considerate tutte le combinazioni tra le tre strategie di
 mapping, \textbf{LINEAR}, \textbf{ZIGZAG} e \textbf{SERPENTINE}, le
-rappresentazioni RGB e in scala di grigi e le due configurazioni
+rappresentazioni RGB e in scala di grigi e le due strategie
 relative alle dimensioni delle immagini. Nella prima configurazione
 le immagini hanno dimensione fissa pari a $224 \times 224$ pixel,
 mentre nella seconda hanno larghezza fissa e altezza variabile in
 funzione della dimensione del file PE. Sono state quindi valutate
-complessivamente 12 configurazioni sperimentali.
+complessivamente 12 configurazioni sperimentali, come riportato nella
+Tabella \ref{tab:configurazioni_sperimentali}.
 
 \begin{table}[H]
     \centering
@@ -94,7 +95,7 @@ complessivamente 12 configurazioni sperimentali.
 Nel caso delle immagini a dimensione fissa, i file PE sono stati
 convertiti direttamente in immagini di $224 \times 224$ pixel, che
 è la dimensione utilizzata in input dal modello ResNet-50 adottato
-negli esperimenti. Per questo non è stato necessario effettuare un
+negli esperimenti e quindi non è stato necessario effettuare un
 successivo ridimensionamento.
 Per le immagini ad altezza variabile, invece, la larghezza è stata
 determinata a partire dalla lunghezza media dei 201.549 file PE del
@@ -108,6 +109,8 @@ ridimensionate a $224 \times 224$ pixel prima di essere fornite al
 modello. Il ridimensionamento è stato effettuato mediante
 interpolazione bilineare, utilizzando \texttt{nn.Upsample} di
 PyTorch \cite{pytorch}.
+La Figura \ref{fig:confronto_dimensioni_linear_gray} mostra il risultato della
+conversione dello stesso file PE con le strategie a dimensione fissa e ad altezza variabile.
 
 \begin{figure}[H]
     \centering
@@ -131,7 +134,7 @@ PyTorch \cite{pytorch}.
     \end{subfigure}
 
     \caption{Confronto dello stesso file PE con mapping LINEAR in
-    scala di grigi nelle configurazioni a dimensione fissa e ad
+    scala di grigi nelle strategie a dimensione fissa e ad
     altezza variabile}
     \label{fig:confronto_dimensioni_linear_gray}
 \end{figure}
@@ -159,22 +162,22 @@ utilizzati \texttt{Dataset} e \texttt{DataLoader} di PyTorch
 etichetta utilizzando le informazioni contenute nei file CSV, mentre
 il DataLoader organizza i campioni nei batch da fornire al modello
 durante il training e il test.
-Durante il caricamento, tutte le immagini sono state lette in formato
-RGB. Nel caso delle immagini originariamente in scala di grigi, i
+Durante il caricamento, tutte le immagini sono state lette in formato RGB
+utilizzando la funzione \texttt{read\_image} di Torchvision~\cite{torchvision}. 
+Nel caso delle immagini originariamente in scala di grigi, i
 valori dei pixel sono stati quindi replicati sui tre canali, in modo
 da ottenere un'immagine compatibile con i tre canali di input utilizzati
 da ResNet-50.
-Prima di essere fornite al modello, le immagini sono state convertite
-in valori compresi tra 0 e 1 e successivamente normalizzate
+Prima di essere fornite al modello, i valori dei pixel delle immagini sono stati
+convertiti nell'intervallo $[0,1]$ e successivamente normalizzati
 utilizzando, per i tre canali, i valori medi
 $[0.485, 0.456, 0.406]$ e le deviazioni standard
 $[0.229, 0.224, 0.225]$, utilizzati dal modello
 \texttt{microsoft/resnet-50} \cite{huggingface_resnet50_preprocessor}.
 Il training set descritto nella Sezione 4.1 è stato ulteriormente
 suddiviso, utilizzando l'80\% dei campioni per l'addestramento e il
-restante 20\% per la validazione. Il validation set è stato utilizzato
-per valutare le prestazioni del modello durante le diverse epoche di
-addestramento.
+restante 20\% per la validazione. Il validation set così ottenuto è stato utilizzato
+per valutare le prestazioni del modello durante le diverse epoche dell'addestramento.
 
 Per tutte le configurazioni sperimentali è stato utilizzato, tramite
 la libreria Hugging Face Transformers, il modello
