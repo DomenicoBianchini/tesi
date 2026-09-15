@@ -5,8 +5,8 @@
 Un possibile approccio per l'analisi statica dei malware consiste nel
 rappresentare il contenuto binario dei file sotto forma di immagini.
 In questo modo, la sequenza di byte che compone un file può essere
-convertita in una rappresentazione da elaborare con tecniche
-di computer vision per la classificazione di immagini.
+convertita in una rappresentazione \textcolor{red}{da elaborare con tecniche}
+\textcolor{red}{di computer vision per la classificazione di immagini.}
 
 \subsection{Rappresentazione in scala di grigi e RGB}
 
@@ -37,7 +37,7 @@ Questo processo di trasformazione è schematizzato nella Figura~\ref{fig:pe_to_g
     \label{fig:pe_to_grayscale}
 \end{figure}
 
-In alternativa alla rappresentazione in scala di grigi, i byte del file PE
+\textcolor{red}{In alternativa} alla rappresentazione in scala di grigi, i byte del file PE
 possono essere utilizzati per costruire un'immagine RGB. In questo
 caso, ciascun pixel è composto da tre canali, rosso, verde e blu,
 ognuno dei quali assume, come nel caso precedente, un valore compreso
@@ -72,7 +72,7 @@ Le due rappresentazioni sono mostrate nella Figura~\ref{fig:pe_grayscale_rgb}.
 \end{figure}
 
 Nel presente lavoro di tesi vengono considerate entrambe le
-rappresentazioni di file PE come immagini, in scala di grigi e RGB. Una volta
+rappresentazioni \textcolor{red}{di file PE come immagini}, in scala di grigi e RGB. Una volta
 ottenuti i valori dei pixel a partire dai byte del file PE, occorre
 stabilire come disporli all'interno della matrice che costituisce
 l'immagine.
@@ -89,7 +89,7 @@ Questa disposizione, tuttavia, interrompe la continuità tra righe
 consecutive, poiché l'ultimo pixel di una riga e il primo della
 successiva, pur corrispondendo a byte consecutivi, non risultano
 adiacenti nell'immagine.
-Il funzionamento del mapping LINEAR è descritto nell'Algoritmo 3.1.
+Il funzionamento del mapping LINEAR è descritto \textcolor{red}{nell'Algoritmo 3.1.}
 
 \begin{algorithm}[H]
     \caption{Pseudocodice del mapping LINEAR}
@@ -117,7 +117,7 @@ da sinistra verso destra, mentre quella successiva da destra verso
 sinistra. In questo modo viene mantenuta la continuità tra righe
 consecutive, poiché i pixel corrispondenti a byte consecutivi
 rimangono adiacenti nell'immagine.
-Il funzionamento del mapping ZIGZAG è descritto nell'Algoritmo 3.2.
+Il funzionamento del mapping ZIGZAG è descritto \textcolor{red}{nell'Algoritmo 3.2.}
 
 \begin{algorithm}[H]
     \caption{Pseudocodice del mapping ZIGZAG}
@@ -149,7 +149,7 @@ sulle diagonali della matrice, alternandone la direzione di
 percorrenza. Questa disposizione consente di mantenere adiacenti
 nell'immagine i pixel corrispondenti a byte consecutivi, distribuendoli
 però lungo le diagonali anziché lungo le righe.
-Il funzionamento del mapping SERPENTINE è descritto nell'Algoritmo 3.3.
+Il funzionamento del mapping SERPENTINE è descritto \textcolor{red}{nell'Algoritmo 3.3.}
 
 \begin{algorithm}[H]
     \caption{Pseudocodice del mapping SERPENTINE}
@@ -188,7 +188,7 @@ Nel caso dei file PE, questa disposizione permette inoltre di
 concentrare in una stessa area dell'immagine le informazioni
 appartenenti alla parte iniziale del file, invece di distribuirle lungo le prime
 righe dell'immagine come avviene nei mapping precedenti.
-La disposizione dei pixel nelle tre strategie di dislocazione dei pixel nella trasformazione di file PE in immagini è illustrata
+La disposizione dei pixel nelle tre strategie di \textcolor{red}{dislocazione dei pixel nella trasformazione di file PE in immagini} è illustrata
 nelle Figure~\ref{fig:mapping_paths} e~\ref{fig:mapping_examples},
 mentre la Tabella~\ref{tab:mapping_comparison} mette a confronto
 le caratteristiche delle diverse strategie.
@@ -256,12 +256,12 @@ avere dimensioni differenti e, di conseguenza, anche il numero di
 pixel ottenuti a partire dalla sequenza di byte può variare da un
 file all'altro.
 
-Un possibile approccio consiste nel fissare a priori le dimensioni
+Un possibile \textcolor{red}{approccio} consiste nel fissare a priori le dimensioni
 dell'immagine, stabilendo quindi un numero massimo di pixel
 disponibili. Se i dati ottenuti dal file non sono sufficienti a
 riempire l'intera immagine, è possibile applicare lo zero-padding,
 completando i pixel rimanenti con valori pari a zero. Al contrario,
-se la quantità di dati supera la capacità dell'immagine, i byte in coda al file che non
+se la quantità di dati supera la capacità dell'immagine, i byte \textcolor{red}{in coda al file che non}
 non possono essere rappresentati vengono eliminati mediante
 troncamento \cite{nguyen2023}.
 
@@ -272,19 +272,33 @@ Nataraj et al. \cite{nataraj2011}, in particolare, scelgono la
 larghezza dell'immagine in base alla dimensione del file, utilizzando
 diversi intervalli prestabiliti, mentre l'altezza dipende dal rapporto
 tra il numero di byte da rappresentare e la larghezza scelta.
-Gli intervalli di dimensione dei file e le corrispondenti larghezze utilizzate sono riportati nella Tabella~\ref{fig:nataraj_widths}.
+Gli intervalli di dimensione dei file e le corrispondenti larghezze utilizzate sono riportati nella \textcolor{red}{Tabella}~\ref{tab:nataraj_widths}.
 
 \begin{table}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{images/nataraj_widths.png}
-    \caption{Larghezze delle immagini utilizzate in funzione della
-    dimensione dei file, tratta da \cite{nataraj2011}}
-    \label{fig:nataraj_widths}
+    \small
+    \caption{Larghezze delle immagini utilizzate in funzione della dimensione dei file, tratta da \cite{nataraj2011}}
+    \label{tab:nataraj_widths}
+    \renewcommand{\arraystretch}{1.25}
+    \begin{tabular}{cc}
+        \toprule
+        \textbf{Dimensione file} & \textbf{Larghezza immagine} \\
+        \midrule
+        $<$ 10 kB          & 32   \\
+        10 kB -- 30 kB     & 64   \\
+        30 kB -- 60 kB     & 128  \\
+        60 kB -- 100 kB    & 256  \\
+        100 kB -- 200 kB   & 384  \\
+        200 kB -- 500 kB   & 512  \\
+        500 kB -- 1000 kB  & 768  \\
+        $>$ 1000 kB        & 1024 \\
+        \bottomrule
+    \end{tabular}
 \end{table}
 
-\noindent In questa tesi si considerano entrambe le strategie per la definizione delle
-dimensioni delle immagini, ossia, immagini a dimensione fissa oppure immagini ad
-altezza variabile. Nella prima strategia le immagini hanno
+\noindent \textcolor{red}{In questa tesi si considerano} entrambe le \textcolor{red}{strategie per la definizione delle}
+dimensioni delle immagini, \textcolor{red}{ossia, immagini a} dimensione fissa oppure \textcolor{red}{immagini ad}
+altezza variabile. Nella prima \textcolor{red}{strategia} le immagini hanno
 dimensioni fisse pari a 224×224 pixel.
 Nella seconda, invece, a differenza dell'approccio adottato da Nataraj et al.~\cite{nataraj2011},
 in cui la larghezza viene scelta in funzione della dimensione del singolo file,
@@ -322,7 +336,7 @@ numero di canali:
 
 \newpage
 
-\noindent Nel caso di immagini RGB, se il numero di byte del file non è multiplo di tre,
+\noindent Nel \textcolor{red}{caso di immagini} RGB, se il numero di byte del file non è multiplo di tre,
 l'arrotondamento per eccesso permette di considerare anche gli
 eventuali byte rimanenti.
 L'altezza viene quindi determinata individualmente per ciascun file dividendo il numero di pixel
@@ -347,9 +361,9 @@ all'elaborazione di dati organizzati sotto forma di immagini.
 
 \subsection{Reti neurali convoluzionali}
 
-Le reti CNN~\cite{lecun2015} sono costituite da una successione di livelli che elaborano
+Le \textcolor{red}{reti CNN~\cite{lecun2015}} sono costituite da una successione di livelli che elaborano
 progressivamente i dati ricevuti in input. Un ruolo centrale è svolto
-nelle reti CNN dai livelli convoluzionali, nei quali dei filtri analizzano porzioni
+\textcolor{red}{nelle reti CNN dai} livelli convoluzionali, nei quali dei filtri analizzano porzioni
 dell'immagine, andando a produrre delle feature map che evidenziano
 determinate caratteristiche presenti nell'immagine. Lo stesso filtro
 viene utilizzato nelle diverse parti dell'immagine, permettendo di
@@ -409,7 +423,7 @@ inizialmente di migliorare e successivamente tende a diminuire. Come
 osservato dagli autori, questo fenomeno non è necessariamente dovuto
 all'overfitting, poiché l'aggiunta di ulteriori livelli può portare
 anche a un peggioramento delle prestazioni durante l'addestramento.
-Per affrontare questo problema, una rete ResNet usa il concetto di
+Per affrontare questo problema, \textcolor{red}{una rete ResNet usa} il concetto di
 \textit{residual learning}. In una rete tradizionale, una successione
 di livelli apprende direttamente una mappatura $H(x)$ a partire
 dall'input $x$. ResNet modifica questo approccio facendo apprendere
@@ -420,7 +434,7 @@ tra la mappatura desiderata e l'input:
 F(x) = H(x) - x.
 \]
 
-La mappatura originale può quindi essere espressa come formulato nella seguente formula:
+La mappatura originale può quindi essere espressa \textcolor{red}{come formulato nella seguente formula:}
 
 \[
 H(x) = F(x) + x.
@@ -446,9 +460,9 @@ blocco residuo con questa configurazione.
     \label{fig:residual_block}
 \end{figure}
 
-Esistono diverse architetture basate sul residual learning, 
-in questa tesi è stata utilizzata ResNet-50, 
-che è una rete ResNet composta da 50 livelli.
+\textcolor{red}{Esistono diverse} architetture basate sul residual learning, 
+\textcolor{red}{in questa tesi è stata} utilizzata ResNet-50, 
+\textcolor{red}{che è una} rete \textcolor{red}{ResNet composta} da 50 livelli.
 Questa architettura utilizza un design a collo di bottiglia
 (\textit{bottleneck design}), nel quale ciascun blocco residuo è
 composto da tre livelli convoluzionali con filtri rispettivamente
@@ -475,14 +489,14 @@ ripetuti rispettivamente 3, 4, 6 e 3 volte. La parte
 finale della rete comprende un livello di average pooling
 seguito da un livello fully connected utilizzato per la
 classificazione.
-Nella Tabella~\ref{fig:resnet50_architecture} viene illustrato il confronto
+Nella Figura~\ref{fig:resnet50_architecture} viene illustrato il confronto
 tra la struttura a 50 livelli e le altre configurazioni proposte in~\cite{he2016}.
 
-\begin{table}[H]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.95\textwidth]
     {images/resnet50_architecture.png}
     \caption{Confronto dell'architettura ResNet-50 con altre
     architetture ResNet, tratto da \cite{he2016}}
     \label{fig:resnet50_architecture}
-\end{table}
+\end{figure}
