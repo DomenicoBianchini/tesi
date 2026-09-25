@@ -9,11 +9,11 @@ un file CSV contenente diverse informazioni associate a ciascun
 file, tra cui la lunghezza in byte e l'etichetta che indica
 l'appartenenza alla \textit{Whitelist} o alla \textit{Blacklist},
 permettendo di distinguere rispettivamente i file benigni da quelli
-malevoli. Queste caratteristiche rendono il dataset particolarmente
+malevoli. Queste caratteristiche rendono il dataset
 adatto per la validazione sperimentale, poiché mette a disposizione sia i file PE
 originali, necessari per la loro conversione in immagini, sia le
 relative etichette utilizzate per la classificazione.
-Il dataset è composto complessivamente da 201.549 file PE, di cui
+Il dataset è composto da 201.549 file PE, di cui
 86.812 appartenenti alla \textit{Whitelist} e quindi considerati
 benigni, e 114.737 appartenenti alla \textit{Blacklist} e quindi
 considerati malevoli.
@@ -42,9 +42,7 @@ originale, come mostrato nella Tabella \ref{tab:dataset_split}.
 \end{table}
 
 Il training set è stato utilizzato per l'addestramento del modello,
-mentre il test set è stato utilizzato per valutarne le prestazioni,
-dato che contiene dati non utilizzati durante il training e permette
-quindi di verificare le prestazioni del modello su nuovi campioni.
+mentre il test set è stato utilizzato per valutarne le \textcolor{red}{prestazioni dei modelli addestrati in termini di accuratezza}.
 
 \section{Set-up e metriche}
 
@@ -132,7 +130,7 @@ conversione dello stesso file PE con le strategie a dimensione fissa e ad altezz
         \label{fig:linear_gray_variable}
     \end{subfigure}
 
-    \caption{Confronto dello stesso file PE con mapping LINEAR in
+    \caption{\textcolor{red}{Immagine ottenuta dallo} stesso file PE con mapping LINEAR in
     scala di grigi nelle strategie a dimensione fissa e ad
     altezza variabile}
     \label{fig:confronto_dimensioni_linear_gray}
@@ -347,8 +345,8 @@ $224 \times 224$ e ad altezza variabile.
     \end{tabular}
 \end{table}
 
-Le seguenti Tabelle \ref{tab:metriche_fixed} e
-\ref{tab:metriche_variable} riportano invece i valori di precision,
+Le Tabelle \ref{tab:metriche_fixed} e
+\ref{tab:metriche_variable} riportano i valori di precision,
 recall e F1-score ottenuti per le classi goodware e malware,
 rispettivamente per le configurazioni a dimensione fissa
 $224 \times 224$ e ad altezza variabile.
@@ -586,7 +584,7 @@ rappresentazioni ottenute dallo stesso file PE è mostrato nella Figura
         \label{fig:linear_rgb_variable_comparison}
     \end{subfigure}
 
-    \caption{Confronto dello stesso file PE nelle rappresentazioni
+    \caption{\textcolor{red}{Immagini dello} dello stesso file PE nelle rappresentazioni
     GRAY e RGB con mapping LINEAR e altezza variabile, dopo il resize
     a $224 \times 224$ pixel}
     \label{fig:confronto_variable_gray_rgb}
