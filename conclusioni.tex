@@ -24,8 +24,8 @@ Come possibile sviluppo futuro, l'analisi potrebbe essere estesa
 utilizzando dataset differenti, in modo da verificare se le
 prestazioni rimangano coerenti anche su altri insiemi di file PE.
 Un ulteriore sviluppo potrebbe riguardare il confronto
-\textcolor{red}{dell'accuratezza della classificazione ottenuta con la} rete
-ResNet-50 \textcolor{red}{con l'accuratezza che si potrebbe ottenere usando} altre architetture della stessa
+dell'accuratezza della classificazione ottenuta con la rete
+ResNet-50 con l'accuratezza che si potrebbe ottenere usando altre architetture della stessa
 famiglia, caratterizzate da una diversa profondità, in modo da
 valutare l'influenza del numero di livelli sulle prestazioni ottenute.
 Potrebbero inoltre essere valutate diverse modalità per determinare
@@ -33,13 +33,13 @@ le dimensioni delle immagini, ad esempio calcolandole in funzione
 della lunghezza in byte del singolo file PE, invece di utilizzare
 una larghezza comune determinata a partire dalla lunghezza media in
 byte dei file del dataset.
-\textcolor{red}{Nella versione attuale della tesi, la fase di pre-elaborazione}
-delle immagini, \textcolor{red}{compresa la fase di ridimensionamento (resize)}
-\textcolor{red}{delle immagini, sono state, entrambe, eseguite} prima di fornire
+Nella versione attuale della tesi, la fase di pre-elaborazione
+delle immagini, compresa la fase di ridimensionamento (resize)
+delle immagini, sono state, entrambe, eseguite prima di fornire
 le immagini in input alla ResNet-50, mentre potrebbe essere interessante valutare come cambiano
 le prestazioni utilizzando l'AutoImageProcessor di Hugging Face
 \cite{huggingface_autoimageprocessor} per la preparazione delle
 immagini.
 Questi possibili sviluppi permetterebbero di proseguire l'analisi e
-approfondire\textcolor{red}{, in futuro, come la} rappresentazione dei file PE come
-immagini \textcolor{red}{possa contribuire a migliorare l'accuratezza della} classificazione di file benigni e malevoli.
+approfondire, in futuro, come la rappresentazione dei file PE come
+immagini possa contribuire a migliorare l'accuratezza della classificazione di file benigni e malevoli.
