@@ -109,8 +109,9 @@ utilizzando la strategia di mapping ricevuta dalla classe \texttt{Application}.
 
 \subsection{Classe PEFile}
 
-La classe \texttt{PEFile} è responsabile della conversione di un singolo
-file PE. Riceve il percorso del file, il percorso della cartella in cui
+La classe \texttt{PEFile}, appartenente al package \texttt{pe}, è
+responsabile della conversione di un singolo file PE. Riceve il percorso
+del file, il percorso della cartella in cui
 salvare l’immagine e il valore di \texttt{MappingType}. Dopo aver letto il
 contenuto binario del file, utilizza il tipo di mapping ricevuto per
 individuare la strategia da applicare e salva infine l’immagine generata
@@ -129,9 +130,10 @@ nella cartella specificata.
 
 \subsection{Enumerazione MappingType}
 
-L’enumerazione \texttt{MappingType} definisce il tipo di strategia di
-mapping da utilizzare per la conversione dei file PE in immagini. Il
-valore viene letto dal file di configurazione dalla classe
+L’enumerazione \texttt{MappingType}, appartenente al package \texttt{pe},
+definisce il tipo di strategia di mapping da utilizzare per la conversione
+dei file PE in immagini. Il valore viene letto dal file di configurazione
+dalla classe
 \texttt{Application} e passato alla classe
 \texttt{PEFile}, che lo utilizza per determinare la strategia di mapping
 da applicare durante la generazione delle immagini.
@@ -158,3 +160,136 @@ byte del file nell’immagine.
     \caption{Diagramma UML del package \texttt{image\_representation}}
     \label{fig:package_image_representation}
 \end{figure}
+
+\subsection{Classe Image}
+
+La classe \texttt{Image}, appartenente al package
+\texttt{image\_representation}, rappresenta l’immagine finale ottenuta
+dalla conversione del file PE. L’immagine è rappresentata tramite un tensore a
+tre dimensioni che contiene i valori dei pixel organizzati secondo righe,
+colonne e canali. La classe riceve il tensore già costruito dalla strategia
+di mapping e si occupa della sua gestione e del salvataggio su file.
+
+\paragraph{Attributi}
+
+\begin{itemize}
+    \raggedright
+    \item \textbf{data} (\texttt{int[][][]}): tensore tridimensionale che
+    contiene i valori dell’immagine organizzati in altezza, larghezza e
+    numero di canali.
+\end{itemize}
+
+\paragraph{Metodi}
+
+\begin{itemize}
+    \raggedright
+    \item \textbf{Image}(\texttt{data:int[][][]}): costruttore della classe
+    che inizializza l’immagine.
+    \item \textbf{getWidth}() $\rightarrow$ \texttt{int}: restituisce la
+    larghezza dell’immagine ricavandola dal tensore associato.
+    \item \textbf{getHeight}() $\rightarrow$ \texttt{int}: restituisce
+    l’altezza dell’immagine ricavandola dal tensore associato.
+    \item \textbf{getNumberOfChannels}() $\rightarrow$ \texttt{int}:
+    restituisce il numero di canali dell’immagine ricavandola dal tensore
+    associato.
+    \item \textbf{save}(\texttt{fileName:String}) $\rightarrow$
+    \texttt{void}: salva l’immagine su file.
+\end{itemize}
+
+\subsection{Classe astratta ImageMappingStrategy}
+
+La classe astratta \texttt{ImageMappingStrategy} definisce il comportamento
+comune delle strategie di mapping. Appartiene al package
+\texttt{image\_representation}. Contiene i parametri necessari alla
+costruzione dell’immagine, cioè larghezza, altezza e numero di canali,
+impostati prima della fase di creazione dell’immagine. Ogni implementazione
+riceve in input la sequenza di byte del file PE e costruisce l’immagine
+utilizzando un diverso ordine di inserimento dei dati in base alla strategia
+scelta.
+L’altezza può essere definita nel file di configurazione oppure impostata a
+0 per utilizzare la modalità a altezza variabile. In questo caso, l’altezza
+necessaria viene calcolata durante la creazione dell’immagine senza
+modificare la configurazione della strategia.
+La gestione dei canali permette di costruire immagini sia in grayscale
+(1 canale) sia RGB (3 canali), modificando la granularità con cui i byte
+vengono letti e inseriti nel tensore, in particolare un byte per pixel nel
+caso grayscale oppure gruppi di tre byte per pixel nel caso RGB.
+
+\paragraph{Attributi}
+
+\begin{itemize}
+    \raggedright
+    \item \textbf{width} (\texttt{int}, statico): larghezza comune
+    utilizzata per la costruzione delle immagini.
+    \item \textbf{height} (\texttt{int}, statico): altezza comune
+    utilizzata per la costruzione delle immagini.
+    \item \textbf{numberOfChannels} (\texttt{int}, statico): numero di
+    canali utilizzato per definire la struttura del tensore.
+\end{itemize}
+
+\paragraph{Metodi}
+
+\begin{itemize}
+    \raggedright
+    \item \textbf{setImageSize}(\texttt{width:int}, \texttt{height:int},
+    \texttt{numberOfChannels:int}) $\rightarrow$ \texttt{void}
+    (statico): imposta i parametri comuni utilizzati dalle strategie per
+    costruire l’immagine.
+    \item \textbf{getVariableHeight}(\texttt{byteCount:int})
+    $\rightarrow$ \texttt{int} (statico): calcola e restituisce l’altezza
+    necessaria in base alla dimensione del file quando l’altezza non è
+    definita.
+    \item \textbf{getWidth}() $\rightarrow$ \texttt{int} (statico):
+    restituisce la larghezza configurata.
+    \item \textbf{getHeight}() $\rightarrow$ \texttt{int} (statico):
+    restituisce l’altezza configurata.
+    \item \textbf{getNumberOfChannels}() $\rightarrow$ \texttt{int}
+    (statico): restituisce il numero di canali configurato.
+    \item \textbf{createImage}(\texttt{byteData:byte[]}) $\rightarrow$
+    \texttt{Image} (astratto): costruisce e restituisce l’immagine a partire
+    dai byte del file PE.
+\end{itemize}
+
+\subsection{Classe LinearMapping}
+
+La classe \texttt{LinearMapping}, appartenente al package
+\texttt{image\_representation}, implementa il mapping inserendo i byte nel
+tensore in modo sequenziale, da sinistra verso destra e dall’alto
+verso il basso.
+
+\paragraph{Metodi}
+
+\begin{itemize}
+    \raggedright
+    \item \textbf{createImage}(\texttt{byteData:byte[]}) $\rightarrow$
+    \texttt{Image}: costruisce l’immagine utilizzando il mapping lineare.
+\end{itemize}
+
+\subsection{Classe ZigZagMapping}
+
+La classe \texttt{ZigZagMapping}, appartenente al package
+\texttt{image\_representation}, implementa il mapping alternando la
+direzione di riempimento delle righe, seguendo un andamento a zigzag.
+
+\paragraph{Metodi}
+
+\begin{itemize}
+    \raggedright
+    \item \textbf{createImage}(\texttt{byteData:byte[]}) $\rightarrow$
+    \texttt{Image}: costruisce l’immagine utilizzando il mapping a zigzag.
+\end{itemize}
+
+\subsection{Classe SerpentineMapping}
+
+La classe \texttt{SerpentineMapping}, appartenente al package
+\texttt{image\_representation}, implementa il mapping seguendo un
+andamento a serpentina.
+
+\paragraph{Metodi}
+
+\begin{itemize}
+    \raggedright
+    \item \textbf{createImage}(\texttt{byteData:byte[]}) $\rightarrow$
+    \texttt{Image}: costruisce l’immagine utilizzando il mapping a
+    serpentina.
+\end{itemize}
