@@ -29,9 +29,10 @@ vengono avviate le principali fasi del processo.
 
 \subsection{Classe Application}
 
-La classe \texttt{Application} è la classe principale del programma e si
-occupa di leggere il file di configurazione e, in base ai parametri
-impostati, di coordinare le diverse fasi del progetto. Per svolgere le
+La classe \texttt{Application}, appartenente al package \texttt{main}, è
+la classe principale del programma e si occupa di leggere il file di
+configurazione e, in base ai parametri
+impostati, di coordinarne le diverse fasi. Per svolgere le
 varie operazioni, richiama le classi responsabili della conversione dei
 file PE, della creazione del file CSV con le etichette, del training e
 del test del modello. Durante la fase di test, coordina anche il calcolo
@@ -42,37 +43,37 @@ delle metriche e il salvataggio dei risultati.
 \begin{itemize}
     \raggedright
     \item \textbf{peEnabled} (\texttt{bool}): indica se abilitare la fase di
-    conversione PE $\rightarrow$ immagini.
+    conversione PE in immagini.
     \item \textbf{filesPath} (\texttt{String}): percorso della cartella
     contenente i file PE da convertire.
     \item \textbf{labelsPath} (\texttt{String}): percorso del file CSV
-    contenente le informazioni dei sample e le label.
+    contenente i nomi dei file PE e le relative etichette.
     \item \textbf{imagesPath} (\texttt{String}): percorso della cartella in cui
     vengono salvate le immagini generate.
-    \item \textbf{imageLabelsPath} (\texttt{String}): Path dove salvare il file
-    CSV contenente il mapping tra il path delle immagini generate e le
-    relative label.
+    \item \textbf{imageLabelsPath} (\texttt{String}): percorso della cartella in cui
+    viene salvato il file CSV contenente il mapping tra il percorso delle immagini generate e le
+    relative etichette.
     \item \textbf{mappingType} (\texttt{MappingType}): strategia di mapping da
     utilizzare.
-    \item \textbf{width} (\texttt{int}): larghezza dell’immagine.
-    \item \textbf{height} (\texttt{int}): altezza dell’immagine.
+    \item \textbf{width} (\texttt{int}): larghezza delle immagini da generare.
+    \item \textbf{height} (\texttt{int}): altezza delle immagini da generare.
     \item \textbf{numberOfChannels} (\texttt{int}): numero di canali
-    dell’immagine.
-    \item \textbf{resizeWidth} (\texttt{int}): larghezza per il resize.
-    \item \textbf{resizeHeight} (\texttt{int}): altezza per il resize.
+    delle immagini da generare.
+    \item \textbf{resizeWidth} (\texttt{int}): larghezza per l'eventuale resize.
+    \item \textbf{resizeHeight} (\texttt{int}): altezza per l'eventuale resize.
     \item \textbf{trainEnabled} (\texttt{bool}): indica se abilitare la fase di
-    training.
+    training del modello.
     \item \textbf{trainImageLabelsPath} (\texttt{String}): percorso del file CSV
-    contenente il mapping immagini-label utilizzato durante il training.
+    contenente il mapping immagini-etichette utilizzato durante il training.
     \item \textbf{epochs} (\texttt{int}): numero di epoche del training.
     \item \textbf{learningRate} (\texttt{float}): learning rate utilizzato
-    durante l’addestramento.
+    durante il training.
     \item \textbf{modelPath} (\texttt{String}): percorso della cartella in cui
     viene salvato il modello addestrato.
     \item \textbf{testEnabled} (\texttt{bool}): indica se abilitare la fase di
-    test.
+    test del modello addestrato.
     \item \textbf{testImageLabelsPath} (\texttt{String}): percorso del file CSV
-    contenente il mapping immagini-label utilizzato durante il test.
+    contenente il mapping immagini-etichette utilizzato durante il test.
     \item \textbf{testModelPath} (\texttt{String}): percorso della cartella
     contenente il modello da utilizzare durante il test.
     \item \textbf{resultsPath} (\texttt{String}): percorso del file CSV in cui
@@ -84,15 +85,10 @@ delle metriche e il salvataggio dei risultati.
 \begin{itemize}
     \raggedright
     \item \textbf{main()} $\rightarrow$ \texttt{void}: punto di ingresso
-    del programma.
-    Legge la configurazione e avvia le varie fasi del progetto in base
-    ai flag presenti nel file di configurazione. Gestisce la conversione
-    dei file PE in immagini, la creazione del file CSV di mapping e la
-    successiva esecuzione delle fasi di training e test.
+    del programma. Coordina l’esecuzione delle diverse fasi in base ai
+    parametri caricati dal file di configurazione.
     \item \textbf{parseConfig}(\texttt{configPath: String})
     $\rightarrow$ \texttt{void}: metodo
-    privato che legge il file di configurazione unico e inizializza gli
-    attributi necessari per l’esecuzione delle diverse fasi del progetto.
-    In particolare legge i parametri necessari e li utilizza per
-    configurare le diverse fasi dell’applicazione.
+    privato che legge il file di configurazione e inizializza gli
+    attributi necessari per l’esecuzione delle diverse fasi del programma.
 \end{itemize}
