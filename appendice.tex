@@ -459,3 +459,109 @@ ottenuta confrontando le etichette reali con quelle predette.
     la matrice di confusione ottenuta confrontando le etichette reali con
     quelle predette.
 \end{itemize}
+
+\section{Package utils}
+
+Il package \texttt{utils} contiene alcune funzionalità di supporto al
+progetto. In particolare, gestisce la creazione del file CSV con il mapping
+tra i percorsi delle immagini e le relative etichette e il calcolo delle
+metriche a partire dalla matrice di confusione ottenuta durante la
+classificazione.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{images/package_utils.PNG}
+    \caption{Diagramma UML del package \texttt{utils}}
+    \label{fig:package_utils}
+\end{figure}
+
+\subsection{Classe LabelDictionary}
+
+La classe \texttt{LabelDictionary}, appartenente al package \texttt{utils},
+è responsabile della gestione delle etichette dei file PE e del mapping tra
+le immagini generate e le relative etichette. Contiene due dizionari
+privati: il primo associa il nome del file PE alla relativa etichetta,
+mentre il secondo associa il percorso dell’immagine generata alla relativa
+etichetta. Legge le etichette nel costruttore, costruisce il mapping durante
+la conversione e salva il risultato finale in un file CSV.
+
+\paragraph{Attributi}
+
+\begin{itemize}
+    \raggedright
+    \item \textbf{labelDictionary}
+    (\texttt{Dictionary<String, Integer>}): dizionario privato che associa
+    il nome del file PE alla relativa etichetta.
+    \item \textbf{imageLabelDictionary}
+    (\texttt{Dictionary<String, Integer>}): dizionario privato che associa
+    il percorso dell’immagine alla relativa etichetta.
+\end{itemize}
+
+\paragraph{Metodi}
+
+\begin{itemize}
+    \raggedright
+    \item \textbf{LabelDictionary}(\texttt{labelsPath:String}): legge il
+    file CSV delle etichette e inizializza il primo dizionario.
+    \item \textbf{addLabelImage}(\texttt{fileName:String},
+    \texttt{imagePath:String}) $\rightarrow$ \texttt{void}: recupera
+    l’etichetta del file PE e aggiunge il mapping tra immagine ed etichetta
+    al secondo dizionario.
+    \item \textbf{save}(\texttt{imageLabelsPath:String})
+    $\rightarrow$ \texttt{void}: salva il secondo dizionario in un file CSV.
+\end{itemize}
+
+\subsection{Classe ClassificationMetrics}
+
+La classe \texttt{ClassificationMetrics}, appartenente al package
+\texttt{utils}, è responsabile del calcolo e del salvataggio delle metriche
+di classificazione. Riceve la matrice di confusione restituita dal test del
+modello ed estrae i quattro valori TN, FP, FN e TP. A partire da questi
+valori calcola l’overall accuracy, la precision, il recall e l’F1-score per
+le classi goodware e malware e salva i risultati della configurazione in un
+file CSV.
+
+\paragraph{Attributi}
+
+\begin{itemize}
+    \raggedright
+    \item \textbf{trueNegative} (\texttt{int}): numero di campioni
+    goodware classificati correttamente.
+    \item \textbf{falsePositive} (\texttt{int}): numero di campioni
+    goodware classificati come malware.
+    \item \textbf{falseNegative} (\texttt{int}): numero di campioni
+    malware classificati come goodware.
+    \item \textbf{truePositive} (\texttt{int}): numero di campioni
+    malware classificati correttamente.
+    \item \textbf{precisionGoodware} (\texttt{float}): precision calcolata
+    per la classe goodware.
+    \item \textbf{recallGoodware} (\texttt{float}): recall calcolata per
+    la classe goodware.
+    \item \textbf{f1Goodware} (\texttt{float}): F1-score calcolato per la
+    classe goodware.
+    \item \textbf{precisionMalware} (\texttt{float}): precision calcolata
+    per la classe malware.
+    \item \textbf{recallMalware} (\texttt{float}): recall calcolata per la
+    classe malware.
+    \item \textbf{f1Malware} (\texttt{float}): F1-score calcolato per la
+    classe malware.
+    \item \textbf{overallAccuracy} (\texttt{float}): overall accuracy
+    calcolata.
+\end{itemize}
+
+\paragraph{Metodi}
+
+\begin{itemize}
+    \raggedright
+    \item \textbf{ClassificationMetrics}(\texttt{confusionMatrix:ndarray}):
+    costruttore della classe. Riceve la matrice di confusione ed estrae i
+    valori TN, FP, FN e TP.
+    \item \textbf{calculateMetrics}() $\rightarrow$ \texttt{void}: calcola
+    l’overall accuracy, la precision, il recall e l’F1-score per le classi
+    goodware e malware.
+    \item \textbf{save}(\texttt{resultsPath:String},
+    \texttt{configuration:Dictionary}) $\rightarrow$ \texttt{void}: salva
+    i valori della matrice di confusione e le metriche calcolate insieme
+    alla configurazione del modello testato in una riga del file CSV dei
+    risultati.
+\end{itemize}
