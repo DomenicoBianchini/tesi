@@ -74,8 +74,8 @@ delle metriche e il salvataggio dei risultati.
     test del modello addestrato.
     \item \textbf{testImageLabelsPath} (\texttt{String}): percorso del file CSV
     contenente il mapping immagini-etichette utilizzato durante il test.
-    \item \textbf{testModelPath} (\texttt{String}): percorso della cartella
-    contenente il modello da utilizzare durante il test.
+    \item \textbf{testModelPath} (\texttt{String}): percorso del modello addestrato
+    da utilizzare durante il test.
     \item \textbf{resultsPath} (\texttt{String}): percorso del file CSV in cui
     vengono salvati i risultati del test e le metriche calcolate.
 \end{itemize}
@@ -87,7 +87,7 @@ delle metriche e il salvataggio dei risultati.
     \item \textbf{main()} $\rightarrow$ \texttt{void}: punto di ingresso
     del programma. Coordina l’esecuzione delle diverse fasi in base ai
     parametri caricati dal file di configurazione.
-    \item \textbf{parseConfig}(\texttt{configPath: String})
+    \item \textbf{parseConfig}(\texttt{configPath:String})
     $\rightarrow$ \texttt{void}: metodo
     privato che legge il file di configurazione e inizializza gli
     attributi necessari per l’esecuzione delle diverse fasi del programma.
