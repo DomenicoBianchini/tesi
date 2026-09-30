@@ -482,8 +482,9 @@ La classe \texttt{LabelDictionary}, appartenente al package \texttt{utils},
 le immagini generate e le relative etichette. Contiene due dizionari
 privati: il primo associa il nome del file PE alla relativa etichetta,
 mentre il secondo associa il percorso dell’immagine generata alla relativa
-etichetta. Legge le etichette nel costruttore, costruisce il mapping durante
-la conversione e salva il risultato finale in un file CSV.
+etichetta. Inizializza il primo dizionario nel costruttore, leggendo le etichette presenti nel
+file CSV ricevuto, e costruisce durante la conversione il mapping nel secondo dizionario, che
+successivamente viene salvato in un file CSV nel percorso specificato.
 
 \paragraph{Attributi}
 
