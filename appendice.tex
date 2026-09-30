@@ -164,7 +164,7 @@ byte del file nell’immagine.
 \subsection{Classe Image}
 
 La classe \texttt{Image}, appartenente al package
-\texttt{image\_representation}, rappresenta l’immagine finale ottenuta
+\texttt{image\_representation}, rappresenta l’immagine generata
 dalla conversione del file PE. L’immagine è rappresentata tramite un tensore a
 tre dimensioni che contiene i valori dei pixel organizzati secondo righe,
 colonne e canali. La classe riceve il tensore già costruito dalla strategia
@@ -190,22 +190,24 @@ di mapping e si occupa della sua gestione e del salvataggio su file.
     \item \textbf{getHeight}() $\rightarrow$ \texttt{int}: restituisce
     l’altezza dell’immagine ricavandola dal tensore associato.
     \item \textbf{getNumberOfChannels}() $\rightarrow$ \texttt{int}:
-    restituisce il numero di canali dell’immagine ricavandola dal tensore
+    restituisce il numero di canali dell’immagine ricavandolo dal tensore
     associato.
     \item \textbf{save}(\texttt{fileName:String}) $\rightarrow$
-    \texttt{void}: salva l’immagine su file.
+    \texttt{void}: salva il tensore associato nel formato immagine 
+    corrispondente nel percorso specificato. In base al numero
+    di canali, l’immagine viene salvata in grayscale oppure in formato RGB.
 \end{itemize}
 
 \subsection{Classe astratta ImageMappingStrategy}
 
-La classe astratta \texttt{ImageMappingStrategy} definisce il comportamento
-comune delle strategie di mapping. Appartiene al package
-\texttt{image\_representation}. Contiene i parametri necessari alla
-costruzione dell’immagine, cioè larghezza, altezza e numero di canali,
-impostati prima della fase di creazione dell’immagine. Ogni implementazione
-riceve in input la sequenza di byte del file PE e costruisce l’immagine
-utilizzando un diverso ordine di inserimento dei dati in base alla strategia
-scelta.
+\noindent\makebox[\linewidth][l]{La classe astratta
+\texttt{ImageMappingStrategy}, appartenente al package}\\
+\texttt{image\_representation}, definisce il comportamento comune delle
+strategie di mapping. Contiene i parametri necessari alla costruzione
+dell’immagine, cioè larghezza, altezza e numero di canali, impostati prima
+della fase di creazione dell’immagine. Ogni implementazione riceve in input
+la sequenza di byte del file PE e costruisce l’immagine secondo la propria
+strategia di mapping.
 L’altezza può essere definita nel file di configurazione oppure impostata a
 0 per utilizzare la modalità a altezza variabile. In questo caso, l’altezza
 necessaria viene calcolata durante la creazione dell’immagine senza
@@ -219,12 +221,13 @@ caso grayscale oppure gruppi di tre byte per pixel nel caso RGB.
 
 \begin{itemize}
     \raggedright
-    \item \textbf{width} (\texttt{int}, statico): larghezza comune
-    utilizzata per la costruzione delle immagini.
-    \item \textbf{height} (\texttt{int}, statico): altezza comune
-    utilizzata per la costruzione delle immagini.
-    \item \textbf{numberOfChannels} (\texttt{int}, statico): numero di
-    canali utilizzato per definire la struttura del tensore.
+    \item \textbf{width} (\texttt{int}): attributo di classe che rappresenta
+    la larghezza comune utilizzata per la costruzione delle immagini.
+    \item \textbf{height} (\texttt{int}): attributo di classe che rappresenta
+    l’altezza comune utilizzata per la costruzione delle immagini.
+    \item \textbf{numberOfChannels} (\texttt{int}): attributo di classe che
+    rappresenta il numero di canali utilizzato per definire la struttura
+    del tensore.
 \end{itemize}
 
 \paragraph{Metodi}
@@ -232,28 +235,31 @@ caso grayscale oppure gruppi di tre byte per pixel nel caso RGB.
 \begin{itemize}
     \raggedright
     \item \textbf{setImageSize}(\texttt{width:int}, \texttt{height:int},
-    \texttt{numberOfChannels:int}) $\rightarrow$ \texttt{void}
-    (statico): imposta i parametri comuni utilizzati dalle strategie per
+    \texttt{numberOfChannels:int}) $\rightarrow$ \texttt{void}: metodo
+    di classe che imposta i parametri comuni utilizzati dalle strategie per
     costruire l’immagine.
     \item \textbf{getVariableHeight}(\texttt{byteCount:int})
-    $\rightarrow$ \texttt{int} (statico): calcola e restituisce l’altezza
-    necessaria in base alla dimensione del file quando l’altezza non è
-    definita.
-    \item \textbf{getWidth}() $\rightarrow$ \texttt{int} (statico):
-    restituisce la larghezza configurata.
-    \item \textbf{getHeight}() $\rightarrow$ \texttt{int} (statico):
-    restituisce l’altezza configurata.
-    \item \textbf{getNumberOfChannels}() $\rightarrow$ \texttt{int}
-    (statico): restituisce il numero di canali configurato.
+    $\rightarrow$ \texttt{int}: metodo di classe che calcola e restituisce
+    l’altezza necessaria in base al numero di byte da rappresentare, quando
+    l’altezza non è definita.
+    \item \textbf{getWidth}() $\rightarrow$ \texttt{int}: metodo di classe
+    che restituisce la larghezza configurata.
+    \item \textbf{getHeight}() $\rightarrow$ \texttt{int}: metodo di classe
+    che restituisce l’altezza configurata.
+    \item \textbf{getNumberOfChannels}() $\rightarrow$ \texttt{int}: metodo 
+    di classe che restituisce il numero di canali configurato.
     \item \textbf{createImage}(\texttt{byteData:byte[]}) $\rightarrow$
-    \texttt{Image} (astratto): costruisce e restituisce l’immagine a partire
-    dai byte del file PE.
+    \texttt{Image}: metodo astratto che viene implementato dalle classi
+    derivate in base alla strategia di mapping utilizzata e che costruisce
+    e restituisce un oggetto della classe \texttt{Image} a partire dalla
+    sequenza di byte del file PE.
 \end{itemize}
 
 \subsection{Classe LinearMapping}
 
 La classe \texttt{LinearMapping}, appartenente al package
-\texttt{image\_representation}, implementa il mapping inserendo i byte nel
+\texttt{image\_representation}, eredita dalla classe astratta
+\texttt{ImageMappingStrategy} e implementa il mapping disponendo i byte nel
 tensore in modo sequenziale, da sinistra verso destra e dall’alto
 verso il basso.
 
@@ -262,34 +268,42 @@ verso il basso.
 \begin{itemize}
     \raggedright
     \item \textbf{createImage}(\texttt{byteData:byte[]}) $\rightarrow$
-    \texttt{Image}: costruisce l’immagine utilizzando il mapping lineare.
+    \texttt{Image}: implementa il metodo astratto della classe
+    \texttt{ImageMappingStrategy} e costruisce l’immagine utilizzando il
+    mapping linear.
 \end{itemize}
 
 \subsection{Classe ZigZagMapping}
 
 La classe \texttt{ZigZagMapping}, appartenente al package
-\texttt{image\_representation}, implementa il mapping alternando la
-direzione di riempimento delle righe, seguendo un andamento a zigzag.
+\texttt{image\_representation}, eredita dalla classe astratta
+\texttt{ImageMappingStrategy} e implementa il mapping disponendo i byte
+nel tensore in modo sequenziale e alternando il verso di percorrenza delle
+righe.
 
 \paragraph{Metodi}
 
 \begin{itemize}
     \raggedright
     \item \textbf{createImage}(\texttt{byteData:byte[]}) $\rightarrow$
-    \texttt{Image}: costruisce l’immagine utilizzando il mapping a zigzag.
+    \texttt{Image}: implementa il metodo astratto della classe
+    \texttt{ImageMappingStrategy} e costruisce l’immagine utilizzando il
+    mapping zigzag.
 \end{itemize}
 
 \subsection{Classe SerpentineMapping}
 
 La classe \texttt{SerpentineMapping}, appartenente al package
-\texttt{image\_representation}, implementa il mapping seguendo un
-andamento a serpentina.
+\texttt{image\_representation}, eredita dalla classe astratta
+\texttt{ImageMappingStrategy} e implementa il mapping disponendo i byte
+nel tensore lungo le diagonali e alternando la direzione di percorrenza.
 
 \paragraph{Metodi}
 
 \begin{itemize}
     \raggedright
     \item \textbf{createImage}(\texttt{byteData:byte[]}) $\rightarrow$
-    \texttt{Image}: costruisce l’immagine utilizzando il mapping a
-    serpentina.
+    \texttt{Image}: implementa il metodo astratto della classe
+    \texttt{ImageMappingStrategy} e costruisce l’immagine utilizzando il
+    mapping serpentine.
 \end{itemize}
