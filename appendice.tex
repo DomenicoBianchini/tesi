@@ -113,8 +113,9 @@ La classe \texttt{PEFile}, appartenente al package \texttt{pe}, è
 responsabile della conversione di un singolo file PE. Riceve il percorso
 del file, il percorso della cartella in cui
 salvare l’immagine e il valore di \texttt{MappingType}. Dopo aver letto il
-contenuto binario del file, utilizza il tipo di mapping ricevuto per
-individuare la strategia da applicare e salva infine l’immagine generata
+contenuto binario del file, utilizza il valore di \texttt{MappingType}
+ricevuto per individuare la strategia di mapping da applicare e salva infine
+l’immagine generata
 nella cartella specificata.
 
 \paragraph{Metodi}
@@ -132,11 +133,10 @@ nella cartella specificata.
 
 L’enumerazione \texttt{MappingType}, appartenente al package \texttt{pe},
 definisce il tipo di strategia di mapping da utilizzare per la conversione
-dei file PE in immagini. Il valore viene letto dal file di configurazione
-dalla classe
-\texttt{Application} e passato alla classe
-\texttt{PEFile}, che lo utilizza per determinare la strategia di mapping
-da applicare durante la generazione delle immagini.
+dei file PE in immagini. La classe \texttt{Application} legge il valore dal
+file di configurazione e lo passa alla classe \texttt{PEFile}, che lo utilizza
+per determinare la strategia di mapping da applicare durante la generazione
+delle immagini.
 
 \paragraph{Valori}
 
@@ -150,9 +150,10 @@ da applicare durante la generazione delle immagini.
 \section{Package image\_representation}
 
 Il package \texttt{image\_representation} contiene le funzionalità
-necessarie per la conversione dei file PE in immagini. Al suo interno
-sono definite le diverse strategie di mapping utilizzate per disporre i
-byte del file nell’immagine.
+necessarie per rappresentare i file PE sotto forma di immagini. Al suo
+interno sono definite la classe \texttt{Image}, che rappresenta l’immagine
+e la sua struttura, e le diverse strategie di mapping utilizzate per
+disporre i byte del file nell’immagine.
 
 \begin{figure}[H]
     \centering
@@ -213,9 +214,9 @@ L’altezza può essere definita nel file di configurazione oppure impostata a
 necessaria viene calcolata durante la creazione dell’immagine senza
 modificare la configurazione della strategia.
 La gestione dei canali permette di costruire immagini sia in grayscale
-(1 canale) sia RGB (3 canali), modificando la granularità con cui i byte
-vengono letti e inseriti nel tensore, in particolare un byte per pixel nel
-caso grayscale oppure gruppi di tre byte per pixel nel caso RGB.
+(1 canale) sia RGB (3 canali), modificando il modo in cui i byte vengono
+letti e inseriti nel tensore, in particolare un byte per pixel nel caso
+grayscale oppure gruppi di tre byte per pixel nel caso RGB.
 
 \paragraph{Attributi}
 
@@ -367,7 +368,7 @@ e la normalizzazione prevista per il modello ResNet.
     \item \textbf{getitem}(\texttt{index:int})
     $\rightarrow$ \texttt{(Tensor, Tensor)}: recupera l’immagine e
     l’etichetta corrispondente all’indice indicato. L’immagine viene
-    convertita in un tensore, normalizzata e eventualmente ridimensionata.
+    convertita in un tensore, normalizzata ed eventualmente ridimensionata.
 \end{itemize}
 
 \subsection{Classe DataLoader}
@@ -419,8 +420,8 @@ file malware.
 \subsection{Classe ResNetModel}
 
 La classe \texttt{ResNetModel}, appartenente al package \texttt{model}, è
-responsabile della gestione del modello di classificazione basato su un modello
-ResNet-50 preaddestrato. Si occupa dell’inizializzazione del modello,
+responsabile della gestione del modello di classificazione basato su una
+ResNet-50 preaddestrata. Si occupa dell’inizializzazione del modello,
 dell’addestramento, della validazione e del
 test. Durante il training salva il modello che ottiene la validation loss più
 bassa, mentre durante il test restituisce la matrice di confusione
@@ -517,9 +518,9 @@ La classe \texttt{ClassificationMetrics}, appartenente al package
 \texttt{utils}, è responsabile del calcolo e del salvataggio delle metriche
 di classificazione. Riceve la matrice di confusione restituita dal test del
 modello ed estrae i quattro valori TN, FP, FN e TP. A partire da questi
-valori calcola l’overall accuracy, la precision, il recall e l’F1-score per
-le classi goodware e malware e salva i risultati della configurazione in un
-file CSV.
+valori calcola l’overall accuracy e, per le classi goodware e malware, la
+precision, il recall e l’F1-score. Salva inoltre i risultati della
+configurazione in un file CSV.
 
 \paragraph{Attributi}
 
@@ -557,8 +558,8 @@ file CSV.
     costruttore della classe. Riceve la matrice di confusione ed estrae i
     valori TN, FP, FN e TP.
     \item \textbf{calculateMetrics}() $\rightarrow$ \texttt{void}: calcola
-    l’overall accuracy, la precision, il recall e l’F1-score per le classi
-    goodware e malware.
+    l’overall accuracy e, per le classi goodware e malware, la precision,
+    il recall e l’F1-score.
     \item \textbf{save}(\texttt{resultsPath:String},
     \texttt{configuration:Dictionary}) $\rightarrow$ \texttt{void}: salva
     i valori della matrice di confusione e le metriche calcolate insieme
