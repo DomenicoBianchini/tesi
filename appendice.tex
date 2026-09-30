@@ -115,8 +115,7 @@ del file, il percorso della cartella in cui
 salvare l’immagine e il valore di \texttt{MappingType}. Dopo aver letto il
 contenuto binario del file, utilizza il valore di \texttt{MappingType}
 ricevuto per individuare la strategia di mapping da applicare e salva infine
-l’immagine generata
-nella cartella specificata.
+l’immagine ottenuta nella cartella specificata.
 
 \paragraph{Metodi}
 
@@ -125,8 +124,8 @@ nella cartella specificata.
     \item \textbf{PEToImage}(\texttt{filePath:String},
     \texttt{imagesPath:String}, \texttt{mappingType:MappingType})
     $\rightarrow$ \texttt{void}: legge il singolo file PE indicato,
-    genera l’immagine utilizzando la strategia di mapping ricevuta e salva
-    il risultato nella cartella delle immagini specificata.
+    passa la sequenza di byte al metodo \texttt{createImage} della strategia di mapping corrispondente 
+    e salva l'immagine ottenuta nella cartella specificata.
 \end{itemize}
 
 \subsection{Enumerazione MappingType}
@@ -347,9 +346,9 @@ e la normalizzazione prevista per il modello ResNet.
     resize.
     \item \textbf{resizeHeight} (\texttt{int}): altezza per l'eventuale
     resize.
-    \item \textbf{\_\_upsample} (\texttt{nn.Upsample}): modulo utilizzato
+    \item \textbf{upsample} (\texttt{nn.Upsample}): modulo utilizzato
     per ridimensionare le immagini quando il resize è abilitato.
-    \item \textbf{\_\_normalize} (\texttt{Normalize}): trasformazione
+    \item \textbf{normalize} (\texttt{Normalize}): trasformazione
     utilizzata per normalizzare i valori dei pixel prima di passarli al
     modello.
 \end{itemize}
