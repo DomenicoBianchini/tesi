@@ -419,11 +419,11 @@ file malware.
 \subsection{Classe ResNetModel}
 
 La classe \texttt{ResNetModel}, appartenente al package \texttt{model}, è
-responsabile della gestione del modello di classificazione basato sulla
-ResNet-50 preaddestrata. Si occupa dell’inizializzazione del modello,
-dell’addestramento, della validazione e della fase di
-test. Durante il training salva automaticamente il modello con la migliore
-validation loss, mentre durante il test restituisce la matrice di confusione
+responsabile della gestione del modello di classificazione basato su un modello
+ResNet-50 preaddestrato. Si occupa dell’inizializzazione del modello,
+dell’addestramento, della validazione e del
+test. Durante il training salva il modello che ottiene la validation loss più
+bassa, mentre durante il test restituisce la matrice di confusione
 ottenuta confrontando le etichette reali con quelle predette.
 
 \paragraph{Attributi}
@@ -441,18 +441,21 @@ ottenuta confrontando le etichette reali con quelle predette.
 \begin{itemize}
     \raggedright
     \item \textbf{ResNetModel}(\texttt{modelPath:String}): costruttore
-    della classe. Inizializza una ResNet-50 preaddestrata oppure carica un
-    modello precedentemente salvato.
+    della classe. Se il percorso del modello non viene specificato,
+    inizializza una ResNet-50 preaddestrata, altrimenti carica un modello
+    precedentemente salvato.
     \item \textbf{train}(\texttt{trainLoader:DataLoader},
     \texttt{validationLoader:DataLoader}, \texttt{epochs:int},
     \texttt{learningRate:float}, \texttt{modelPath:String})
     $\rightarrow$ \texttt{void}: esegue il training del modello, calcola la
     training loss e la validation loss a ogni epoca e salva automaticamente
-    il modello con la migliore validation loss.
+    il modello che ottiene la validation loss più bassa.
     \item \textbf{validate}(\texttt{validationLoader:DataLoader},
-    \texttt{criterion:Loss}) $\rightarrow$ \texttt{float}: metodo privato
-    che esegue la fase di validazione e restituisce la validation loss media.
+    \texttt{criterion:CrossEntropyLoss}) $\rightarrow$ \texttt{float}:
+    metodo privato che esegue la fase di validazione e restituisce la
+    validation loss media.
     \item \textbf{test}(\texttt{testLoader:DataLoader})
     $\rightarrow$ \texttt{ndarray}: esegue il test del modello e restituisce
-    la matrice di confusione.
+    la matrice di confusione ottenuta confrontando le etichette reali con
+    quelle predette.
 \end{itemize}
