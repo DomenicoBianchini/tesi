@@ -312,7 +312,7 @@ nel tensore lungo le diagonali e alternando la direzione di percorrenza.
 
 Il package \texttt{dataloader} si occupa di preparare le immagini e le
 relative etichette per essere utilizzate dal modello. Gestisce la
-creazione dei dataset e dei dati necessari per il training, la validation
+creazione dei dataset necessari per il training, la validation
 e il test.
 
 \begin{figure}[H]
@@ -483,7 +483,7 @@ le immagini generate e le relative etichette. Contiene due dizionari
 privati: il primo associa il nome del file PE alla relativa etichetta,
 mentre il secondo associa il percorso dell’immagine generata alla relativa
 etichetta. Inizializza il primo dizionario nel costruttore, leggendo le etichette presenti nel
-file CSV ricevuto, e costruisce durante la conversione il mapping nel secondo dizionario, che
+file CSV indicato, e costruisce durante la conversione il mapping nel secondo dizionario, che
 successivamente viene salvato in un file CSV nel percorso specificato.
 
 \paragraph{Attributi}
@@ -515,12 +515,11 @@ successivamente viene salvato in un file CSV nel percorso specificato.
 \subsection{Classe ClassificationMetrics}
 
 La classe \texttt{ClassificationMetrics}, appartenente al package
-\texttt{utils}, è responsabile del calcolo e del salvataggio delle metriche
-di classificazione. Riceve la matrice di confusione restituita dal test del
+\texttt{utils}, è responsabile del calcolo delle metriche di classificazione e del
+loro salvataggio nel file CSV indicato. Riceve la matrice di confusione restituita dal test del
 modello ed estrae i quattro valori TN, FP, FN e TP. A partire da questi
 valori calcola l’overall accuracy e, per le classi goodware e malware, la
-precision, il recall e l’F1-score. Salva inoltre i risultati della
-configurazione in un file CSV.
+precision, il recall e l’F1-score.
 
 \paragraph{Attributi}
 
