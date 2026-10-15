@@ -22,3 +22,6 @@
 
 # File temporanei generati da minted
 _minted*/
+
+# File dello stile del frontespizio
+topfront.sty
