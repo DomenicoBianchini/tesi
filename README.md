@@ -85,17 +85,16 @@ I file principali sono organizzati nel seguente modo:
 
 ## Nota sul codice e sul dataset
 
-Il repository contiene principalmente il testo della tesi, le immagini e la
-documentazione della progettazione. Il dataset utilizzato per gli esperimenti
-non è incluso direttamente nel repository, ma può essere scaricato dalla
-[pagina Kaggle del progetto](https://www.kaggle.com/datasets/domenicobianchini/pe-malware-dataset).
-La versione caricata è già organizzata nei set di training e test, quindi non
-è necessario ripetere la suddivisione prima di iniziare gli esperimenti.
+Il codice utilizzato per la conversione dei file PE in immagini, la
+preparazione dei dati, il training e la valutazione del modello è disponibile
+nel repository [pe-image-conversion](https://github.com/DomenicoBianchini/pe-image-conversion).
 
-La descrizione della pipeline e delle classi principali è disponibile
-nell'appendice della tesi. In particolare, la pipeline comprende la
-conversione dei file PE in immagini, la preparazione dei dataset, il training
-e la valutazione del modello ResNet-50.
+Il dataset utilizzato negli esperimenti è disponibile su
+[Kaggle](https://www.kaggle.com/datasets/domenicobianchini/pe-malware-dataset) ed
+è già organizzato nei set di training e test.
+
+Nell'appendice della tesi è riportato il diagramma UML delle classi del
+progetto, insieme alla descrizione dei principali componenti della pipeline.
 
 ## Sviluppi futuri
 
