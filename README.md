@@ -73,11 +73,8 @@ I file principali sono organizzati nel seguente modo:
 ├── conclusioni.tex           # Conclusioni e possibili sviluppi futuri
 ├── appendice.tex             # Progettazione UML e descrizione dei componenti
 ├── bibliografia.bib          # Riferimenti bibliografici
-├── dedica.tex                # Dedica
-├── note.tex                  # Note introduttive
 ├── ringraziamenti.tex        # Ringraziamenti
 ├── images/                   # Immagini, diagrammi e loghi usati nella tesi
-├── topfront.sty              # Stile del frontespizio
 ├── tesi.pdf                  # PDF della tesi già compilato
 ├── LICENSE.txt               # Licenza del template
 └── .gitignore                # File esclusi dal repository
