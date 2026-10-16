@@ -2,6 +2,8 @@
 
 **[Visualizza il PDF completo della tesi](tesi.pdf)**
 
+**[Visualizza il PDF delle slide della presentazione](presentazione.pdf)**
+
 Questo repository contiene i sorgenti LaTeX e il materiale utilizzato per la
 mia tesi di laurea in Informatica presso l'Università degli Studi di Bari Aldo
 Moro.
@@ -76,6 +78,7 @@ I file principali sono organizzati nel seguente modo:
 ├── ringraziamenti.tex        # Ringraziamenti
 ├── images/                   # Immagini, diagrammi e loghi usati nella tesi
 ├── tesi.pdf                  # PDF della tesi già compilato
+├── presentazione.pdf         # PDF delle slide della presentazione
 ├── LICENSE.txt               # Licenza del template
 └── .gitignore                # File esclusi dal repository
 ```
